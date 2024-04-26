@@ -1,0 +1,6 @@
+*.pyc
+*.ipynb
+*/
+Button.py
+*.csv
+.DS_Store
