@@ -24,7 +24,7 @@ class ASSOCIATION:
                     try:
                         l.playNext()
                     except IndexError:
-                        print('End of Season')
+                        print(f'End of Season in {l.name}')
         else:
             self.cup.playNext(num)
 
@@ -44,12 +44,15 @@ class ASSOCIATION:
             except ValueError:  # Cup winner not in top flight
                 pass
             cands.insert(CLspots, cup)
+        """  
         self.euroTeams = [
             cands[:CLspots],  # Champions League
             cands[CLspots:sum(self.euroSpots[0:2])],  # Europa League
             cands[sum(self.euroSpots[0:2]):totalspots],  # Conference League
             cands[totalspots:(totalspots+3)]  # Extra In case
         ]
+        """
+        self.euroTeams = cands[:10]  # all in one list for backups
         # End Europe
         # RELEGATION
         if len(self.leagues) > 1: # i.e. relegation needs to happen
