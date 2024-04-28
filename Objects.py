@@ -1,6 +1,7 @@
 from Matchup import *
 
-qualitySpread = 0
+qualitySpread = 5
+adjustSpread = 5
 
 class GK:
     def __init__(self):
@@ -41,6 +42,7 @@ class CLUB:
     def __init__(self, name, abr, qual = 70):
         self.name = name
         self.ABR = abr
+        self.league = None
         # GAME
         self.score = 0
         # For controlled ----
@@ -50,7 +52,7 @@ class CLUB:
         self.squadMID = []
         self.squadATT = []
         # For all ----
-        self.coach = sum(numpy.random.normal(qual, qualitySpread, 1))
+        self.coach = sum([clamp(i, 0, 100) for i in numpy.random.normal(qual, qualitySpread, 1)])
         # GK
         self.shotstopper = sum([clamp(i, 0, 100) for i in numpy.random.normal(qual, qualitySpread, 1)])
         self.sweeperkeeper = sum([clamp(i, 0, 100) for i in numpy.random.normal(qual, qualitySpread, 1)])
@@ -169,6 +171,36 @@ class CLUB:
                     self.baserating = sum(self.qual)
         else:
             pass
+
+    def ratingAdjust(self):
+        # For all ----
+        self.coach = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.coach/1, adjustSpread, 1)])
+        # GK
+        self.shotstopper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.shotstopper/1, adjustSpread, 1)])
+        self.sweeperkeeper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.sweeperkeeper/1, adjustSpread, 1)])
+        self.eleventhman = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.eleventhman/1, adjustSpread, 1)])
+        # DEF
+        self.lowblock = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.lowblock/4, adjustSpread, 4)])
+        self.possession = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.possession/4, adjustSpread, 4)])
+        self.overload = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.overload/4, adjustSpread, 4)])
+        self.longball = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.longball/4, adjustSpread, 4)])
+        # MID
+        self.quick = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.quick/3, adjustSpread, 3)])
+        self.holding = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holding/3, adjustSpread, 3)])
+        self.control = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.control/3, adjustSpread, 3)])
+        self.crossing = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.crossing/3, adjustSpread, 3)])
+        # ATT
+        self.routeone = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.routeone/3, adjustSpread, 3)])
+        self.false9 = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.false9/3, adjustSpread, 3)])
+        self.inbehind = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.inbehind/3, adjustSpread, 3)])
+        self.holdup = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holdup/3, adjustSpread, 3)])
+        # FULL
+        self.qual = None, None, None, None
+        self.roles = None, None, None, None
+        self.basetactic = None
+        self.baserating = 0
+        self.tactic = None
+        self.rolesSet(seasonStart=True)
 
     def tacticSet(self):
         G, D, M, A = self.roles

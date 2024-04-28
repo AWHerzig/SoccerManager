@@ -1,7 +1,7 @@
 from Objects import *
 
 
-def game(home, away, show=False, ET = False, agg = [0, 0]):
+def game(home, away, show=False, ET = False, agg = [0, 0], neutral = False):
     home.rolesSet(opp = away.basetactic)
     away.rolesSet(opp = home.basetactic)
     #print(home.basetactic, home.tactic, home.qual, home.roles)
@@ -20,7 +20,7 @@ def game(home, away, show=False, ET = False, agg = [0, 0]):
         (away.qual[2] if away.roles[2] == 'Control' else 0) + (away.qual[3] if away.roles[3] == 'False 9' else 0) - \
         matchup[0]
     diff = homeposs - awayposs
-    oddsOfHomePoss = clamp(.5 + (math.sqrt(diff) if diff >= 0 else -1*math.sqrt(abs(diff))) / 400, \
+    oddsOfHomePoss = clamp((.5 if neutral else .55) + (math.sqrt(diff) if diff >= 0 else -1*math.sqrt(abs(diff))) / 400, \
                             .1, .9)
     homeSharp = sharpness(home, away)
     awaySharp = sharpness(away, home)
@@ -29,16 +29,16 @@ def game(home, away, show=False, ET = False, agg = [0, 0]):
     homeGPM = oddsOfChance * oddsOfHomePoss * homeSharp * homeFinish
     awayGPM = oddsOfChance * (1 - oddsOfHomePoss) * awaySharp * awayFinish
     stoppage = random.randint(2, 10)
-    note = ''
+    note = 'Neutral Site ' if neutral else ''
     if not show:
         home.score += round(numpy.random.binomial(90 + stoppage, homeGPM))
         away.score += round(numpy.random.binomial(90 + stoppage, awayGPM))
         if home.score == away.score and ET:
-            note = 'a.e.t.'
+            note = note + 'a.e.t.'
             home.score += round(numpy.random.binomial(30, homeGPM))
             away.score += round(numpy.random.binomial(30, awayGPM))
             if home.score == away.score:
-                note = 'Penalties'
+                note = note + 'Penalties'
                 if odds(.5): # Figure it out later
                     home.score += 1
                 else:
@@ -55,7 +55,7 @@ def game(home, away, show=False, ET = False, agg = [0, 0]):
                         if odds(awayFinish):
                             away.score += 1
         if home.score == away.score and ET:
-            note = 'a.e.t.'
+            note = note + 'a.e.t.'
             for minute in range(1, 31): # 31 not included
                 if odds(oddsOfChance):
                     if odds(oddsOfHomePoss):
@@ -67,7 +67,7 @@ def game(home, away, show=False, ET = False, agg = [0, 0]):
                             if odds(awayFinish):
                                 away.score += 1
             if home.score == away.score:
-                note = 'Penalties'
+                note = note + 'Penalties'
                 if odds(.5): # Figure it out later
                     home.score += 1
                 else:

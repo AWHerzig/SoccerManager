@@ -1,21 +1,23 @@
 from Game import *
 
-year = 1
 RESULTS = pandas.DataFrame(columns = ['Year', 'Competition', 'Round', 'Home', 'HomeScore', 'AwayScore', 'Away', 'Notes'])
+DIRECTORY = pandas.DataFrame(columns = ['Year', 'Association', 'League', 'Team', 'BaseRating'])
+WINNERS = pandas.DataFrame(columns = ['Year', 'Competition', 'Team'])
 
 class ASSOCIATION:
     def __init__(self, name, abr, leagues, relSpots, lastSpot, euroSpots):
         self.name = name
         self.abr = abr
-        self.leagues = [LEAGUE(f'{self.name} League {div+1}', f'{self.abr}-{div+1}', leagues[div], self) for div in range(len(leagues))]
+        self.leagues = [LEAGUE(f'{self.name} League {div+1}', f'{self.abr}{div+1}', leagues[div], self) for div in range(len(leagues))]
         self.relSpots = relSpots
         self.last = lastSpot  # 0 for straight up, 1 for "England" Playoff, 2 for "Germany" Playoff 
         allteams = []
         for i in self.leagues:
             allteams += i.teams
-        self.cup = CUP(f'{self.name} Cup', f'{self.abr}-C', allteams)
+        self.cup = CUP(f'{self.name} Cup', f'{self.abr}C', allteams)
         self.euroSpots = euroSpots
         self.euroTeams = []
+        self.year = 1
 
     def playNext(self, comp, num=1): # num is round for cup and how many slates for league
         if comp in ['L', 'League', 'LEAGUE']:
@@ -31,7 +33,7 @@ class ASSOCIATION:
     def endOfYear(self):
         if self.cup.fixtures.shape[1] != 1:
             raise ValueError('Cup isnt finished')
-        if self.leagues[0].slate != len(self.leagues[0].schedule):
+        if self.leagues[0].slate < len(self.leagues[0].schedule):
             raise ValueError('League isnt finished')
         # Start Europe
         totalspots = sum(self.euroSpots)
@@ -74,9 +76,13 @@ class ASSOCIATION:
                 self.leagues[div].seasonStart(survive + promoted)
                 self.leagues[div+1].seasonStart(relegated + stayDown)
         # END RELEGATION
+        self.year += 1
         allteams = []
         for i in self.leagues:
             allteams += i.teams
+        for i in allteams:
+            i.ratingAdjust()
+            DIRECTORY.loc[len(DIRECTORY)] = [self.year, self.name, i.league.name, i.name, i.baserating]
         self.cup.seasonStart(allteams)
     
 
@@ -102,10 +108,14 @@ class LEAGUE:
         self.schedule = RoundRobin(list(self.standings.index), double=True)
         self.slate = 0
         self.playoffs = None
+        self.year = 1
+        for i in self.teams:
+            i.league = self
+            DIRECTORY.loc[len(DIRECTORY)] = [self.year, self.assoc.name, self.name, i.name, i.baserating]
         self.out()
 
     def resultHandler(self, result):
-        RESULTS.loc[len(RESULTS)] = [year, self.abr, self.slate+1]+result
+        RESULTS.loc[len(RESULTS)] = [self.year, self.abr, self.slate+1]+result
         # Home
         self.standings.loc[result[0], 'Played'] += 1
         self.standings.loc[result[0], 'GoalDifference'] += result[1] - result[2]
@@ -132,26 +142,33 @@ class LEAGUE:
             self.standings.loc[result[3], 'Points'] += 1
 
     def playNext(self):
+        pause = False
+        mydiv = self.assoc.leagues.index(self)
         if self.slate < len(self.schedule):
             for match in self.schedule[self.slate]:
                 self.resultHandler(game(match[0], match[1]))
             self.standings.sort_values(['Points', 'GoalDifference', 'GoalsFor', 'Wins'], ascending = False, inplace = True)
             self.slate += 1
             self.out()
-        else:
-            mydiv = self.assoc.leagues.index(self)
-            if self.playoffs is None and self.assoc.last > 0 and mydiv > 0:
-                autospots = self.assoc.relSpots[mydiv - 1] - 1
-                if self.assoc.last == 1:
-                    self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
-                        teams = list(self.standings.index)[autospots:(autospots+4)], agg = True, finalagg = False)
-                else:
-                    topTeam = self.assoc.leagues[mydiv-1].standings.index[len(self.assoc.leagues[mydiv-1].standings) - (autospots+1)]
-                    self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
-                        teams = [self.standings.index[autospots], topTeam], \
-                        agg = True, finalagg = True)
-                self.playoffs.playNext()
-            elif self.assoc.last > 0 and mydiv > 0:
+        if self.slate == len(self.schedule):
+            WINNERS.loc[len(WINNERS)] = [self.year, self.abr, self.standings.index[0]]
+        if self.slate == len(self.schedule) and self.assoc.last > 0 and mydiv > 0:
+            autospots = self.assoc.relSpots[mydiv - 1] - 1
+            if self.assoc.last == 1:
+                self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
+                    teams = list(self.standings.index)[autospots:(autospots+4)], agg = True, finalagg = False)
+            else:
+                topTeam = self.assoc.leagues[mydiv-1].standings.index[len(self.assoc.leagues[mydiv-1].standings) - (autospots+1)]
+                self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
+                    teams = [self.standings.index[autospots], topTeam], \
+                    agg = True, finalagg = True)
+            self.playoffs.year = self.year
+            self.slate += 1
+            pause = True
+        elif self.slate == len(self.schedule):
+            self.slate += 1
+        if self.slate > len(self.schedule) and self.playoffs is not None and not pause:
+            if self.assoc.last > 0 and mydiv > 0:
                 self.playoffs.playNext()
             else:
                 pass
@@ -159,6 +176,8 @@ class LEAGUE:
     def seasonStart(self, teams = None):
         if teams is not None:
             self.teams = teams
+            for team in teams:
+                team.league = self
         n = len(self.teams)
         self.standings = pandas.DataFrame({
             'Teams': self.teams,
@@ -172,7 +191,13 @@ class LEAGUE:
             'GoalsAgainst': [0]*n
         }).set_index('Teams')
         self.schedule = RoundRobin(list(self.standings.index), double=True)
+        self.playoffs = None
+        if os.path.isfile(f'Output/{self.abr}PFixtures.csv'):
+            os.remove(f'Output/{self.abr}PFixtures.csv')
+        if self.slate > 0: # Basically, if it hasn't already been reset
+            self.year += 1
         self.slate = 0
+        self.out()
 
     def out(self):
         RESULTS.to_csv(f'Output/Results.csv', index = False)
@@ -208,10 +233,11 @@ class CUP:
             away = bottomdraw[split:]
             bottomfixtures = pandas.DataFrame({'Home': home, 'Away': away})
             self.fixtures = pandas.concat([topfixtures, bottomfixtures], ignore_index = True)
+        self.year = 1
         self.out()
 
     def resultHandler(self, result, advance = True):
-        RESULTS.loc[len(RESULTS)] = [year, self.abr, f'{len(self.fixtures)*2}-{self.leg}']+result
+        RESULTS.loc[len(RESULTS)] = [self.year, self.abr, f'{len(self.fixtures)*2}-{self.leg}']+result
         if advance:
             if result[2] == 'NA': # Home Bye
                 self.winners.append(result[0])
@@ -233,11 +259,14 @@ class CUP:
         matches = zip(self.fixtures.Home, self.fixtures.Away)
         if ((not self.agg) and len(self.fixtures) > 1) or ((not self.finalagg) and len(self.fixtures) == 1): # No Agg
             matches = zip(self.fixtures.Home, self.fixtures.Away)
-            for match in matches:
-                if match[1] is None:
-                    self.resultHandler([match[0], 'NA', 'NA', 'BYE', 'No Game'])
-                else:
-                    self.resultHandler(game(match[0], match[1], ET=True))
+            if len(self.fixtures) == 1: # Final at neutral site
+                self.resultHandler(game(self.fixtures.Home[0], self.fixtures.Away[0], ET=True, neutral = True))
+            else:
+                for match in matches:
+                    if match[1] is None:
+                        self.resultHandler([match[0], 'NA', 'NA', 'BYE', 'No Game'])
+                    else:
+                        self.resultHandler(game(match[0], match[1], ET=True))
         elif self.leg == 1: # First leg
             self.aggholder = pandas.DataFrame(columns = ['Teams', 'Score']).set_index('Teams')
             for match in matches:
@@ -262,6 +291,7 @@ class CUP:
             self.fixtures = pandas.DataFrame({'Home': home, 'Away': away})
         elif len(self.winners) == 1:
             self.fixtures = pandas.DataFrame({'Champion': [self.winners[0]]})
+            WINNERS.loc[len(WINNERS)] = [self.year, self.abr, self.winners[0]]
         self.out()
 
     def seasonStart(self, teams):
@@ -287,6 +317,8 @@ class CUP:
             away = bottomdraw[split:]
             bottomfixtures = pandas.DataFrame({'Home': home, 'Away': away})
             self.fixtures = pandas.concat([topfixtures, bottomfixtures], ignore_index = True)
+        self.year += 1
+        self.out()
 
 
     def out(self):
