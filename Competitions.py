@@ -10,7 +10,7 @@ class ASSOCIATION:
         self.abr = abr
         self.leagues = [LEAGUE(f'{self.name} League {div+1}', f'{self.abr}{div+1}', leagues[div], self) for div in range(len(leagues))]
         self.relSpots = relSpots
-        self.last = lastSpot  # 0 for straight up, 1 for "England" Playoff, 2 for "Germany" Playoff 
+        self.last = lastSpot  # 'na' for straight up
         allteams = []
         for i in self.leagues:
             allteams += i.teams
@@ -152,12 +152,15 @@ class LEAGUE:
             self.out()
         if self.slate == len(self.schedule):
             WINNERS.loc[len(WINNERS)] = [self.year, self.abr, self.standings.index[0]]
-        if self.slate == len(self.schedule) and self.assoc.last > 0 and mydiv > 0:
+        if self.slate == len(self.schedule) and self.assoc.last != 'na' and mydiv > 0:
             autospots = self.assoc.relSpots[mydiv - 1] - 1
-            if self.assoc.last == 1:
+            if self.assoc.last == 'ENG':
                 self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
                     teams = list(self.standings.index)[autospots:(autospots+4)], agg = True, finalagg = False)
-            else:
+            elif self.assoc.last == 'ESP':
+                self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
+                    teams = list(self.standings.index)[autospots:(autospots+4)], agg = True, finalagg = True)
+            elif self.assoc.last == 'GER':
                 topTeam = self.assoc.leagues[mydiv-1].standings.index[len(self.assoc.leagues[mydiv-1].standings) - (autospots+1)]
                 self.playoffs = CUP(self.name + ' prom. playoffs', self.abr + 'P', \
                     teams = [self.standings.index[autospots], topTeam], \
@@ -168,7 +171,7 @@ class LEAGUE:
         elif self.slate == len(self.schedule):
             self.slate += 1
         if self.slate > len(self.schedule) and self.playoffs is not None and not pause:
-            if self.assoc.last > 0 and mydiv > 0:
+            if self.assoc.last != 'na' and mydiv > 0:
                 self.playoffs.playNext()
             else:
                 pass
@@ -254,7 +257,8 @@ class CUP:
         if len(self.fixtures) < Round: # Get the finals lined up
             return
         if self.fixtures.shape[1] == 1:
-            raise ValueError('Cup already over')
+            print(f'{self.name} over')
+            return
         self.winners = []
         matches = zip(self.fixtures.Home, self.fixtures.Away)
         if ((not self.agg) and len(self.fixtures) > 1) or ((not self.finalagg) and len(self.fixtures) == 1): # No Agg

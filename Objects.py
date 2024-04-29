@@ -1,6 +1,6 @@
 from Matchup import *
 
-qualitySpread = 5
+qualitySpread = 0
 adjustSpread = 5
 
 class GK:

@@ -25,6 +25,7 @@ readOutput <- function(){
     name <- strsplit(file, '[.]')[[1]][1]
     assign(name, read.csv(paste0('Output/', file)), envir = .GlobalEnv)
   }
+  WinnersWide <<- Winners %>% pivot_wider(names_from = 'Year', values_from = 'Team')
 }
 teamResults <- function(team){
   one <- Results %>% filter(Home == team | Away == team)
@@ -36,6 +37,5 @@ teamResults <- function(team){
   )
   new %>% select(Year, Competition, Round, Type, Team, TeamScore, OppScore, Opp, Notes)
 }
-WHU <- teamResults('Tottenham Hotspur')
 
 readOutput()

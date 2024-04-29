@@ -1,17 +1,17 @@
 from Competitions import *
 # ENGLAND
 ENG1 = [  # http://elofootball.com/country.php?countryiso=ENG&season=2023-2024
-    CLUB('Manchester City', 'MNC', 95),  # 2397
-    CLUB('Liverpool', 'LIV', 92),
-    CLUB('Arsenal', 'ARS', 91),
-    CLUB('Aston Villa', 'AST', 87),
+    CLUB('Manchester City', 'MNC', 99),  # 2397
+    CLUB('Liverpool', 'LIV', 94),  # 2252
+    CLUB('Arsenal', 'ARS', 93),
+    CLUB('Aston Villa', 'AST', 87),  # 2111
     CLUB('Tottenham Hotspur', 'TOT', 87),
     CLUB('Manchester United', 'MNU', 84),
     CLUB('Newcastle United', 'NEW', 82),
     CLUB('West Ham United', 'WHU', 80),
     CLUB('Chelsea', 'CHE', 80),
     CLUB('Brighton HA', 'BHA', 79),
-    CLUB('Brentford', 'BRE', 76),
+    CLUB('Brentford', 'BRE', 76), # 1985
     CLUB('Fulham', 'FUL', 76),
     CLUB('Wolverhampton', 'WOL', 75),
     CLUB('Crystal Palace', 'PAL', 72),
@@ -100,5 +100,94 @@ ENG4 = [
     CLUB('Sutton United', 'SUT', 20),
     CLUB('Forest Green', 'FOR', 16)  # 1252
 ]
-ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2, ENG3, ENG4], relSpots=[3, 3, 4], lastSpot=1, euroSpots=[4, 2, 1])
+ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2, ENG3, ENG4], relSpots=[3, 3, 4], lastSpot='ENG', euroSpots=[4, 2, 1])
 # SPAIN
+ESP1 = [
+    CLUB('Real Madrid', 'RMA', 97),  # 2348
+    CLUB('FC Barcelona', 'FCB', 90),  # 2182
+    CLUB('Girona', 'GIR', 85),
+    CLUB('Atletico Madrid', 'ATL', 88),
+    CLUB('AC Bilbao', 'BIL', 87), 
+    CLUB('Real Sociedad', 'SOC', 83),
+    CLUB('Real Betis', 'BET', 78),
+    CLUB('Valencia', 'VAL', 76),
+    CLUB('Villarreal', 'VIL', 80), # 2038
+    CLUB('Getafe', 'GET', 70), # 1934
+    CLUB('Osasuna', 'OSA', 69),
+    CLUB('Alaves', 'ALA', 67),
+    CLUB('Sevilla', 'SEV', 78),
+    CLUB('Las Palmas', 'PAL', 65),
+    CLUB('Rayo Vallecano', 'RAY', 65),
+    CLUB('Mallorca', 'MAL', 72),
+    CLUB('Celta Vigo', 'CEL', 71),
+    CLUB('Cadiz', 'CAD', 65),
+    CLUB('Granada', 'GRA', 61), # 1802
+    CLUB('Almeria', 'ALM', 60),
+]
+ESP2 = [
+    CLUB('Leganes', 'LEG', 61),
+    CLUB('Valladolid', 'VDD', 64),
+    CLUB('Eibar', 'EIB', 63),
+    CLUB('Espanyol', 'ESP', 64),
+    CLUB('Elche', 'ELC', 61),
+    CLUB('Racing Santander', 'RCS', 56), # 1745
+    CLUB('Sporting Gijon', 'GIJ', 56),
+    CLUB('Real Oviedo', 'OVI', 60),
+    CLUB('Burgos', 'BUR', 55),
+    CLUB('Racing Ferrol', 'RCF', 53), # 1708
+    CLUB('Levante', 'LEV', 61),
+    CLUB('Tenerife', 'TEN', 55),
+    CLUB('Real Zaragoza', 'ZAR', 54),
+    CLUB('Eldense', 'ELD', 49),
+    CLUB('FC Cartagena', 'CAR', 52),
+    CLUB('Huesca', 'HUE', 55),
+    CLUB('Mirandes', 'MIR', 50),
+    CLUB('Alcorcon', 'ALC', 49),
+    CLUB('Albacete', 'ALB', 51),
+    CLUB('Villarreal B', 'VIL-B', 48),
+    CLUB('Amorebieta', 'AMO', 50),
+    CLUB('Andorra', 'AND', 50)
+]
+SPAIN = ASSOCIATION('Spain', 'ESP', leagues = [ESP1, ESP2], relSpots = [3], lastSpot = 'ESP', euroSpots = [4, 2, 1])
+# GERMANY
+GER1 = [
+    CLUB('Leverkusen', 'LEV', 94), # 2246
+    CLUB('Bayern Munich', 'BAY', 93),
+    CLUB('VfB Stuttgart', 'STU', 83),
+    CLUB('RB Leipzig', 'LEI', 90),
+    CLUB('Borrusia Dortmund', 'DOR', 91),
+    CLUB('Eintracht Frankfurt', 'EIN', 74),
+    CLUB('SC Freiburg', 'FRE', 74),
+    CLUB('Augsburg', 'AUG', 67),
+    CLUB('Hoffenheim', 'HOF', 69),
+    CLUB('Werder Bremen', 'WER', 66),
+    CLUB('Heidenheim', 'HEI', 65), # 1876
+    CLUB('Wolfsburg', 'WOL', 68),
+    CLUB('Monchengladbach', 'MON', 69), # 1912
+    CLUB('Union Berlin', 'UNI', 67),
+    CLUB('VfL Bochum', 'BOC', 63), # 1837
+    CLUB('Mainz', 'MAI', 67),
+    CLUB('Koln', 'KOL', 64),
+    CLUB('Darmstadt', 'DAR', 56) # 1754
+]
+GER2 = [
+    CLUB('FC St. Pauli', 'StP', 65),
+    CLUB('Holstein Kiel', 'KIE', 64),
+    CLUB('Dusseldorf', 'DUS', 65),
+    CLUB('Hamburger SV', 'HSV', 59),
+    CLUB('Karlsruher', 'KAR', 57), # 1767
+    CLUB('Hannover 96', 'HAN', 54), # 1729
+    CLUB('Paderborn', 'PAD', 56),
+    CLUB('Hertha Berlin', 'HER', 58),
+    CLUB('Greuther Furth', 'FUR', 49), # 1669
+    CLUB('SV Elversberg', 'ELV', 48),
+    CLUB('FC Magdeburg', 'MAG', 50),
+    CLUB('FC Schalke', 'S04', 54),
+    CLUB('Nurnberg', 'FCN', 46),
+    CLUB('Eintracht Braunschweig', 'EBW', 47),
+    CLUB('Kaiserslautern', 'FCK', 49),
+    CLUB('Wehen Wiesbaden', 'WIE', 45),
+    CLUB('Hansa', 'HAN', 42), # 1580
+    CLUB('Osnabruck', 'OSN', 41)
+]
+GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2], relSpots = [3], lastSpot = 'GER', euroSpots = [4, 2, 1])
