@@ -39,7 +39,7 @@ class ATT:
         self.holdup = 5
 
 class CLUB:
-    def __init__(self, name, abr, qual = 70):
+    def __init__(self, name, abr, qual = 40):
         self.name = name
         self.ABR = abr
         self.league = None

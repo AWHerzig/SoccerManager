@@ -155,7 +155,7 @@ GER1 = [
     CLUB('Bayern Munich', 'BAY', 93),
     CLUB('VfB Stuttgart', 'STU', 83),
     CLUB('RB Leipzig', 'LEI', 90),
-    CLUB('Borrusia Dortmund', 'DOR', 91),
+    CLUB('Borrusia Dortmund', 'BVB', 91),
     CLUB('Eintracht Frankfurt', 'EIN', 74),
     CLUB('SC Freiburg', 'FRE', 74),
     CLUB('Augsburg', 'AUG', 67),
@@ -190,4 +190,128 @@ GER2 = [
     CLUB('Hansa', 'HAN', 42), # 1580
     CLUB('Osnabruck', 'OSN', 41)
 ]
-GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2], relSpots = [3], lastSpot = 'GER', euroSpots = [4, 2, 1])
+GER3 = [
+    CLUB('SSV Ulm', 'ULM'),
+    CLUB('Jahn Regensburg', 'REG'),
+    CLUB('Preuben Munster', 'MUN'),
+    CLUB('Rot-Weiss Essen', 'RWE'),
+    CLUB('Dynamo Dresden', 'DYN'),
+    CLUB('Saarbrucken', 'SAA'),
+    CLUB('Erzgebirge Aue', 'ERZ'),
+    CLUB('Unterhaching', 'UNT'),
+    CLUB('SV Sandhausen', 'SAN'),
+    CLUB('Borussia Dortmund 2', 'BVB2'),
+    CLUB('Ingolstadt', 'ING'),
+    CLUB('Viktoria Koln', 'VIK'),
+    CLUB('Verl', 'VER'),
+    CLUB('1860 Munich', '1860'),
+    CLUB('Arminia', 'ARM'),
+    CLUB('SV Waldhof', 'WAL'),
+    CLUB('Hallescher', 'HAL'),
+    CLUB('MSV Duisburg', 'DUI'),
+    CLUB('Lubeck', 'LUB'),
+    CLUB('SC Freiburg 2', 'FRE2')
+]
+GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2, GER3], relSpots = [3, 3], lastSpot = 'GER', euroSpots = [4, 2, 1])
+# ITALY
+
+ITA1 = [
+    CLUB('Internazionale', 'INT'),
+    CLUB('AC Milan', 'ACM'),
+    CLUB('Juventus', 'JUV'),
+    CLUB('Bolonga', 'BOL'),
+    CLUB('Roma', 'ROM'),
+    CLUB('Atalanta', 'ATA'),
+    CLUB('Lazio', 'LAZ'),
+    CLUB('Fiorentina', 'FIO'),
+    CLUB('Napoli', 'NAP'),
+    CLUB('Torino', 'TOR'),
+    CLUB('Monza', 'MON'),
+    CLUB('Genoa', 'GEN'),
+    CLUB('Lecce', 'LEC'),
+    CLUB('Cagliari', 'CAG'),
+    CLUB('Verona', 'VER'),
+    CLUB('Frosinone', 'FRO'),
+    CLUB('Empoli', 'EMP'),
+    CLUB('Udinese', 'UDI'),
+    CLUB('Sassuolo', 'SAS'),
+    CLUB('Salernitana', 'SAL')
+]
+ITA2 = [
+    CLUB('Parma', 'PAR'),
+    CLUB('Como', 'COM'),
+    CLUB('Venezia', 'VEN'),
+    CLUB('Cremonese', 'CRE'),
+    CLUB('Catanzaro', 'CAT'),
+    CLUB('Palermo', 'PAL'),
+    CLUB('Sampdoria', 'SAM'),
+    CLUB('Brescia', 'BRE'),
+    CLUB('Sudtirol', 'SUD'),
+    CLUB('Reggiana', 'REG'),
+    CLUB('Cosenza', 'COS'),
+    CLUB('Pisa', 'PIS'),
+    CLUB('Cittadella', 'CIT'),
+    CLUB('Modena', 'MOD'),
+    CLUB('Spezia', 'SPE'),
+    CLUB('Ascoli', 'ASC'),
+    CLUB('Ternana', 'TER'),
+    CLUB('Bari', 'BAR'),
+    CLUB('FeralpiSalo', 'FS'), # What kind of a name is this
+    CLUB('Lecco', 'LEC')
+]
+ITALY = ASSOCIATION('Italy', 'ITA', leagues = [ITA1, ITA2], relSpots = [3], lastSpot = 'ESP', euroSpots = [4, 2, 1])
+# Okay so italy has their own different promotion playoffs but its suuuuper weird so I'm ignoring the first round and the 14-points clear rule, then its just ESP
+# FRANCE
+FRA1 = [
+    CLUB('Paris St-Germain', 'PSG'),
+    CLUB('Monaco', 'MON'),
+    CLUB('Brest', 'BRE'),
+    CLUB('LOSC Lille', 'LIL'),
+    CLUB('Nice', 'NIC'),
+    CLUB('Lens', 'LEN'),
+    CLUB('Olympique Marseille', 'OM'),
+    CLUB('Olympique Lyon', 'OL'),
+    CLUB('Rennes', 'REN'),
+    CLUB('Toulouse', 'TOU'),
+    CLUB('Reims', 'REI'),
+    CLUB('Montpellier', 'MTP'),
+    CLUB('Strasbourg', 'STR'),
+    CLUB('Nantes', 'NAN'),
+    CLUB('Le Havre', 'HAV'),
+    CLUB('Metz', 'MET'),
+    CLUB('Lorient', 'LOR'),
+    CLUB('Clermont Foot', 'CLE')
+]
+FRA2 = [
+    CLUB('Auxerre', 'AUX'),
+    CLUB('St-Etienne', 'StE'),
+    CLUB('Angers', 'ANG'),
+    CLUB('Rodez', 'ROD'),
+    CLUB('Paris FC', 'PAR'),
+    CLUB('Stade Laval', 'LAV'),
+    CLUB('Pau', 'PAU'),
+    CLUB('Caen','CAE'),
+    CLUB('Guingamp', 'GUI'),
+    CLUB('Amiens SC', 'AMI'),
+    CLUB('Ajaccio', 'AJA'),
+    CLUB('Bastia', 'BAS'),
+    CLUB('Grenoble Foot','GRE'),
+    CLUB('Bordeaux', 'BOR'),
+    CLUB('Annecy', 'ANN'),
+    CLUB('Dunkerque', 'DUN'),
+    CLUB('Troyes', 'TRY'),
+    CLUB('Quevilly-Rouen', 'QUE'),
+    CLUB('Concarneau', 'CON'),
+    CLUB('Valenciennes', 'VAFC')
+]
+FRANCE = ASSOCIATION('France', 'FRA', leagues = [FRA1, FRA2], relSpots = [3], lastSpot = 'GER', euroSpots = [2, 3, 1])
+# France also has a weird Playoff system I'm ignoring the first round of, Germany's gets the point of it
+
+
+
+
+
+
+
+
+

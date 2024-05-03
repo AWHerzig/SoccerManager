@@ -1,6 +1,6 @@
 from Clubs import *
 
-Associations = [ENGLAND, SPAIN, GERMANY]
+Associations = [ENGLAND, SPAIN, GERMANY, ITALY, FRANCE]
 DIRECTORY.to_csv('Output/Directory.csv', index=False)
 WINNERS.to_csv('Output/Winners.csv', index=False)
 

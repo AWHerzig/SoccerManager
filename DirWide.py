@@ -303,7 +303,7 @@ League = [
     CLUB(),
     CLUB(),
     CLUB(),
-    CLUB(),
+    CLUB()
 ]
 """
 
