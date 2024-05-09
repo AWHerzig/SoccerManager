@@ -1,5 +1,5 @@
 from Competitions import *
-## TIER 1 ----
+## TIER A ----
 # ENGLAND
 ENG1 = [  # http://elofootball.com/country.php?countryiso=ENG&season=2023-2024
     CLUB('Manchester City', 'MNC', 99),  # 2397
@@ -101,7 +101,7 @@ ENG4 = [
     CLUB('Sutton United', 'SUT', 20),
     CLUB('Forest Green', 'FOR', 16)  # 1252
 ]
-ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2, ENG3, ENG4], relSpots=[3, 3, 4], lastSpot='ENG', euroSpots=[4, 2, 1])
+ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2, ENG3, ENG4], relSpots=[3, 3, 4], lastSpot='ENG')
 # SPAIN
 ESP1 = [
     CLUB('Real Madrid', 'RMA', 97),  # 2348
@@ -149,7 +149,7 @@ ESP2 = [
     CLUB('Amorebieta', 'AMO', 50),
     CLUB('Andorra', 'AND', 50)
 ]
-SPAIN = ASSOCIATION('Spain', 'ESP', leagues = [ESP1, ESP2], relSpots = [3], lastSpot = 'ESP', euroSpots = [4, 2, 1])
+SPAIN = ASSOCIATION('Spain', 'ESP', leagues = [ESP1, ESP2], relSpots = [3], lastSpot = 'ESP')
 # GERMANY
 GER1 = [
     CLUB('Leverkusen', 'LEV', 94), # 2246
@@ -213,7 +213,7 @@ GER3 = [
     CLUB('Lubeck', 'LUB'),
     CLUB('SC Freiburg 2', 'FRE2')
 ]
-GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2, GER3], relSpots = [3, 3], lastSpot = 'GER', euroSpots = [4, 2, 1])
+GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2, GER3], relSpots = [3, 3], lastSpot = 'GER')
 # ITALY
 
 ITA1 = [
@@ -260,10 +260,10 @@ ITA2 = [
     CLUB('FeralpiSalo', 'FS'), # What kind of a name is this
     CLUB('Lecco', 'LEC')
 ]
-ITALY = ASSOCIATION('Italy', 'ITA', leagues = [ITA1, ITA2], relSpots = [3], lastSpot = 'ESP', euroSpots = [4, 2, 1])
+ITALY = ASSOCIATION('Italy', 'ITA', leagues = [ITA1, ITA2], relSpots = [3], lastSpot = 'ESP')
 # Okay so italy has their own different promotion playoffs but its suuuuper weird so I'm ignoring the first round and the 14-points clear rule, then its just ESP
 
-## TIER 2 ----
+## TIER B ----
 # FRANCE
 FRA1 = [
     CLUB('Paris St-Germain', 'PSG'),
@@ -307,7 +307,7 @@ FRA2 = [
     CLUB('Concarneau', 'CON'),
     CLUB('Valenciennes', 'VAFC')
 ]
-FRANCE = ASSOCIATION('France', 'FRA', leagues = [FRA1, FRA2], relSpots = [3], lastSpot = 'GER', euroSpots = [2, 3, 1])
+FRANCE = ASSOCIATION('France', 'FRA', leagues = [FRA1, FRA2], relSpots = [3], lastSpot = 'GER')
 # France also has a weird Playoff system I'm ignoring the first round of, Germany's gets the point of it
 # PORTUGAL
 POR1 = [
@@ -350,7 +350,8 @@ POR2 = [
     CLUB('Belenenses', 'BEL'),
     CLUB('Vilaverdense', 'VIL')
 ]
-PORTUGAL = ASSOCIATION('Portugal', 'POR', leagues = [POR1, POR2], relSpots = [3], lastSpot = 'GER', euroSpots = [2, 3, 1])
+PORTUGAL = ASSOCIATION('Portugal', 'POR', leagues = [POR1, POR2], relSpots = [3], lastSpot = 'GER')
+## TIER C----
 # NETHERLANDS
 NED1 = [
     CLUB('PSV Eindhoven', 'PSV'),
@@ -394,10 +395,8 @@ NED2 = [
     CLUB('TOP Oss', 'OSS'),
     CLUB('Utrecht B', 'UTR-B')
 ]
-NETHERLANDS = ASSOCIATION('Netherlands', 'NED', leagues = [NED1, NED2], relSpots = [3], lastSpot = 'GER', euroSpots = [2, 3, 1])
+NETHERLANDS = ASSOCIATION('Netherlands', 'NED', leagues = [NED1, NED2], relSpots = [3], lastSpot = 'GER')
 # Also weirdass promotion playoffs I refuse to acknowledge
-
-## TIER 3----
 # SCOTLAND
 SCO1 = [
     CLUB('Celtic', 'CEL'),
@@ -413,7 +412,7 @@ SCO1 = [
     CLUB('St Johnstone', 'StJ'),
     CLUB('Livingston', 'LIV')
 ]
-SCOTLAND = ASSOCIATION('Scotland', 'SCO', leagues = [SCO1], relSpots = [], lastSpot = 'na', euroSpots = [1, 2, 2])
+SCOTLAND = ASSOCIATION('Scotland', 'SCO', leagues = [SCO1], relSpots = [], lastSpot = 'na')
 # Yeah yeah I know
 # GREECE
 GRE1 = [
@@ -432,7 +431,7 @@ GRE1 = [
     CLUB('Volos', 'VOL'),
     CLUB('Giannina', 'GIA')
 ]
-GREECE = ASSOCIATION('Greece', 'GRE', leagues = [GRE1], relSpots = [], lastSpot = 'na', euroSpots = [1, 2, 2])
+GREECE = ASSOCIATION('Greece', 'GRE', leagues = [GRE1], relSpots = [], lastSpot = 'na')
 # Yeah yeah I know
 # TURKEY
 TUR1 = [
@@ -457,7 +456,7 @@ TUR1 = [
     CLUB('Pendikspor', 'PEN'),
     CLUB('Istanbulspor', 'IST')
 ]
-TURKIYE = ASSOCIATION('Turkiye', 'TUR', leagues = [TUR1], relSpots = [], lastSpot = 'na', euroSpots = [1, 2, 2])
+TURKIYE = ASSOCIATION('Turkiye', 'TUR', leagues = [TUR1], relSpots = [], lastSpot = 'na')
 # BELGIUM
 BEL1 = [
     CLUB('Union SG', 'USG'),
@@ -477,7 +476,7 @@ BEL1 = [
     CLUB('Kortrijk', 'KOR'),
     CLUB('RWD Molenbeek', 'RWD')
 ]
-BELGIUM = ASSOCIATION('Belgium', 'BEL', leagues = [BEL1], relSpots = [], lastSpot = 'na', euroSpots = [1, 2, 2])
+BELGIUM = ASSOCIATION('Belgium', 'BEL', leagues = [BEL1], relSpots = [], lastSpot = 'na')
 # DENMARK
 DEN1 = [
     CLUB('Midtjylland', 'MID'),
@@ -493,14 +492,73 @@ DEN1 = [
     CLUB('Vejle BK', 'VEJ'),
     CLUB('Hvidovre', 'HVI')
 ]
-DENMARK = ASSOCIATION('Denmark', 'DEN', leagues = [DEN1], relSpots = [], lastSpot = 'na', euroSpots = [1, 2, 2])
+DENMARK = ASSOCIATION('Denmark', 'DEN', leagues = [DEN1], relSpots = [], lastSpot = 'na')
 # SWITZERLAND
-
+SUI1 = [
+    CLUB('Young Boys', 'YB'),
+    CLUB('Lugano', 'LUG'),
+    CLUB('Servette', 'SER'),
+    CLUB('St. Gallen', 'StG'),
+    CLUB('Winterthur', 'WIN'),
+    CLUB('FC Zurich', 'ZUR'),
+    CLUB('Luzern', 'LUZ'),
+    CLUB('Lausanne', 'LAU'),
+    CLUB('Basel', 'BAS'),
+    CLUB('Yverdon', 'YVE'),
+    CLUB('Grasshoppers', 'GRA'),
+    CLUB('Stade Lausanne-Ouchy', 'SLO')
+]
+SWITZERLAND = ASSOCIATION('Switzerland', 'SUI', leagues = [SUI1], relSpots = [], lastSpot = 'na')
 # AUSTRIA
-
+AUS1 = [
+    CLUB('RB Salzburg', 'SAL'),
+    CLUB('SK Sturm Graz', 'STU'),
+    CLUB('LASK', 'LAS'),
+    CLUB('Austria Klagenfurt', 'KLA'),
+    CLUB('Hartberg', 'HAR'),
+    CLUB('Rapid Wien', 'RAP'),
+    CLUB('Austria Wien', 'AUS'),
+    CLUB('Wolfsberg', 'WOL'),
+    CLUB('Altach', 'ALT'),
+    CLUB('Blau-Weis Linz', 'BWL'),
+    CLUB('WSG Tirol', 'TIR'),
+    CLUB('Austria Lustenau', 'LUS')
+]
+AUSTRIA = ASSOCIATION('Austria', 'AUS', leagues = [AUS1], relSpots = [], lastSpot = 'na')
 # CROATIA
-
+CRO1 = [
+    CLUB('Dinamo Zagreb', 'ZAG'),
+    CLUB('Rijeka', 'RIJ'),
+    CLUB('Hajduk Split', 'HAJ'),
+    CLUB('Osijek', 'OSI'),
+    CLUB('NK Lokomotiva', 'LOK'),
+    CLUB('Varazdin', 'VAR'),
+    CLUB('Istra 1961', 'IST'),
+    CLUB('HNK Gorica', 'GOR'),
+    CLUB('Slaven Belupo', 'BEL'),
+    CLUB('Rudes', 'RUD')
+]
+CROATIA = ASSOCIATION('Croatia', 'CRO', leagues = [CRO1], relSpots = [], lastSpot = 'na')
 # CZECHIA
+CZE1 = [
+    CLUB('Sparta Praha', 'SPA'),
+    CLUB('Slavia Praha', 'SLA'),
+    CLUB('Viktoria Plzen', 'VIK'),
+    CLUB('Banik', 'BAN'),
+    CLUB('Mlada Boleslav', 'MLA'),
+    CLUB('Slovacko', 'SLO'),
+    CLUB('Liberec', 'LIB'),
+    CLUB('Sigma', 'SIG'),
+    CLUB('Hradec Kralove', 'HK'),
+    CLUB('Teplice', 'TEP'),
+    CLUB('Bohemians ___', 'BOH'),
+    CLUB('Jablonec', 'JAB'),
+    CLUB('FK Pardubice', 'PAR'),
+    CLUB('Karvina', 'KAR'),
+    CLUB('Zlin', 'ZLI'),
+    CLUB('SK Dynamo', 'DYN')
+]
+CZECHIA = ASSOCIATION('Czechia', 'CZE', leagues = [CZE1], relSpots = [], lastSpot = 'na')
 
 
 

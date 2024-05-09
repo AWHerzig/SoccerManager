@@ -5,7 +5,7 @@ DIRECTORY = pandas.DataFrame(columns = ['Year', 'Association', 'League', 'Team',
 WINNERS = pandas.DataFrame(columns = ['Year', 'Competition', 'Team'])
 
 class ASSOCIATION:
-    def __init__(self, name, abr, leagues, relSpots, lastSpot, euroSpots):
+    def __init__(self, name, abr, leagues, relSpots, lastSpot):
         self.name = name
         self.abr = abr
         self.leagues = [LEAGUE(f'{self.name} League {div+1}', f'{self.abr}{div+1}', leagues[div], self) for div in range(len(leagues))]
@@ -15,8 +15,6 @@ class ASSOCIATION:
         for i in self.leagues:
             allteams += i.teams
         self.cup = CUP(f'{self.name} Cup', f'{self.abr}C', allteams)
-        self.euroSpots = euroSpots
-        self.euroTeams = []
         self.year = 1
 
     def playNext(self, comp, num=1): # num is round for cup and how many slates for league
@@ -36,6 +34,7 @@ class ASSOCIATION:
         if self.leagues[0].slate < len(self.leagues[0].schedule):
             raise ValueError('League isnt finished')
         # Start Europe
+        """  
         totalspots = sum(self.euroSpots)
         cands = list(self.leagues[0].standings.index) # Top Flight Teams
         cup = self.cup.winners[0]
@@ -46,7 +45,7 @@ class ASSOCIATION:
             except ValueError:  # Cup winner not in top flight
                 pass
             cands.insert(CLspots, cup)
-        """  
+        
         self.euroTeams = [
             cands[:CLspots],  # Champions League
             cands[CLspots:sum(self.euroSpots[0:2])],  # Europa League
@@ -54,7 +53,7 @@ class ASSOCIATION:
             cands[totalspots:(totalspots+3)]  # Extra In case
         ]
         """
-        self.euroTeams = cands[:10]  # all in one list for backups
+        #self.euroTeams = cands[:10]  # all in one list for backups
         # End Europe
         # RELEGATION
         if len(self.leagues) > 1: # i.e. relegation needs to happen
@@ -68,13 +67,15 @@ class ASSOCIATION:
                         pass
                 survive = upTeams[:(len(upTeams)-self.relSpots[div])]
                 downTeams = list(self.leagues[div+1].standings.index)
-                if self.last > 0:
+                if self.last != 'na':
                     promoted = downTeams[:(self.relSpots[div]-1)] + [self.leagues[div+1].playoffs.fixtures.Champion[0]]
                 else:
                     promoted = downTeams[:self.relSpots[div]]
                 stayDown = [team for team in downTeams if team not in promoted]
                 self.leagues[div].seasonStart(survive + promoted)
                 self.leagues[div+1].seasonStart(relegated + stayDown)
+        else:
+            self.leagues[0].seasonStart()
         # END RELEGATION
         self.year += 1
         allteams = []
@@ -84,6 +85,9 @@ class ASSOCIATION:
             i.ratingAdjust()
             DIRECTORY.loc[len(DIRECTORY)] = [self.year, self.name, i.league.name, i.name, i.baserating]
         self.cup.seasonStart(allteams)
+
+    def __str__(self):
+        return self.name
     
 
 
@@ -106,6 +110,8 @@ class LEAGUE:
             'GoalsAgainst': [0]*n
         }).set_index('Teams')
         self.schedule = RoundRobin(list(self.standings.index), double=True)
+        if len(self.teams) <= 12:
+            self.schedule = self.schedule + RoundRobin(list(self.standings.index), double=True)
         self.slate = 0
         self.playoffs = None
         self.year = 1
@@ -194,6 +200,8 @@ class LEAGUE:
             'GoalsAgainst': [0]*n
         }).set_index('Teams')
         self.schedule = RoundRobin(list(self.standings.index), double=True)
+        if len(self.teams) <= 12:
+            self.schedule = self.schedule + RoundRobin(list(self.standings.index), double=True)
         self.playoffs = None
         if os.path.isfile(f'Output/{self.abr}PFixtures.csv'):
             os.remove(f'Output/{self.abr}PFixtures.csv')
@@ -205,6 +213,9 @@ class LEAGUE:
     def out(self):
         RESULTS.to_csv(f'Output/Results.csv', index = False)
         self.standings.reset_index().to_csv(f'Output/{self.abr}Standings.csv', index = False)
+
+    def __str__(self):
+        return self.name
 
 
 class CUP:
@@ -240,7 +251,12 @@ class CUP:
         self.out()
 
     def resultHandler(self, result, advance = True):
-        RESULTS.loc[len(RESULTS)] = [self.year, self.abr, f'{len(self.fixtures)*2}-{self.leg}']+result
+        if self.leg == 2:
+            result[1] -= self.aggholder.loc[result[0]]
+            result[2] -= self.aggholder.loc[result[3]]
+            RESULTS.loc[len(RESULTS)] = [self.year, self.abr, f'{len(self.fixtures)*2}-{self.leg}']+result
+        else:
+            RESULTS.loc[len(RESULTS)] = [self.year, self.abr, f'{len(self.fixtures)*2}-{self.leg}']+result
         if advance:
             if result[2] == 'NA': # Home Bye
                 self.winners.append(result[0])
@@ -323,6 +339,9 @@ class CUP:
             self.fixtures = pandas.concat([topfixtures, bottomfixtures], ignore_index = True)
         self.year += 1
         self.out()
+
+    def __str__(self):
+        return self.name
 
 
     def out(self):
