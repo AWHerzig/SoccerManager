@@ -90,7 +90,6 @@ class ASSOCIATION:
         return self.name
     
 
-
 class LEAGUE:
     def __init__(self, name, abr, teams, assoc = None):
         self.name = name
@@ -348,6 +347,62 @@ class CUP:
         RESULTS.to_csv(f'Output/Results.csv', index=False)
         self.fixtures.to_csv(f'Output/{self.abr}Fixtures.csv', index=False)
         
+class EUhelper:
+    def __init__(self, assoc, teams, cup):
+        self.teams = teams
+        self.assoc = assoc
+        self.cup = cup
+        self.chosen = []
+
+    def pop(self):
+        team = self.teams[0]
+        self.chosen.append(team)
+        self.teams = self.teams[1:]
+        return team
+
+    def remove(self, team):
+        if team in self.teams:
+            self.teams.remove(team)
+            self.chosen.append(team)
+
+class EUROPE:
+    def __init__(self):
+        self.pastCL = None
+        self.pastEL = None
+        self.cupWinners = []
+        self.CLteams = [[], [], [], []]
+        self.ELteams = [[], [], [], []]
+        self.ECteams = [[], [], [], []]
+        self.CLplayin = []
+        self.ELplayin = [[], []]
+        self.ECplayin = [[], []]
+        self.holder = []
+        self.Ateams = {}
+        self.Bteams = {}
+        self.Cteams = {}
+
+    def setup(self, As, Bs, Cs):
+        A = [EUhelper(x, list(x.leagues[0].standings.index[:11]), x.cup.winners[0]) for x in As]
+        B = [EUhelper(x, list(x.leagues[0].standings.index[:11]), x.cup.winners[0]) for x in Bs]
+        C = [EUhelper(x, list(x.leagues[0].standings.index[:11]), x.cup.winners[0]) for x in Cs]
+        for i in A + B + C:
+            i.remove(self.pastCL)
+            i.remove(self.pastEL)
+        self.CLteams[0] = [self.pastCL, self.pastEL] + [x.pop() for x in A+B]
+        C1s = sorted([x.pop() for x in C], key = lambda x: x.baserating, reverse = True)
+        self.CLteams[1] = C1s[:2] + [x.pop() for x in A+B]
+        self.CLteams[2] = C1s[2:]
+        self.CLteams[3] = [x.pop() for x in A] + ([numpy.nan] * 4)
+        CLP = sorted([x.pop() for x in A], key = lambda x: x.baserating, reverse = True) + \
+            sorted([x.pop() for x in B], key = lambda x: x.baserating, reverse = True) + \
+            sorted([x.pop() for x in C], key = lambda x: x.baserating, reverse = True)
+        self.CLplayin = [[CLP[0], CLP[15], CLP[7], CLP[8]],
+                        [CLP[1], CLP[14], CLP[6], CLP[9]],
+                        [CLP[2], CLP[13], CLP[4], CLP[10]],
+                        [CLP[3], CLP[12], CLP[4], CLP[11]]]
+
+
+
 
 
 
