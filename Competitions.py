@@ -152,7 +152,7 @@ class LEAGUE:
         if self.slate < len(self.schedule):
             for match in self.schedule[self.slate]:
                 self.resultHandler(game(match[0], match[1]))
-            self.standings.sort_values(['Points', 'GoalDifference', 'GoalsFor', 'Wins'], ascending = False, inplace = True)
+            self.standings.sort_values(['Points', 'GoalDifference', 'GoalsFor', 'Wins'], ascending = False, inumpylace = True)
             self.slate += 1
             self.out()
         if self.slate == len(self.schedule):
@@ -377,9 +377,6 @@ class EUROPE:
         self.ELplayin = [[], []]
         self.ECplayin = [[], []]
         self.holder = []
-        self.Ateams = {}
-        self.Bteams = {}
-        self.Cteams = {}
 
     def setup(self, As, Bs, Cs):
         A = [EUhelper(x, list(x.leagues[0].standings.index[:11]), x.cup.winners[0]) for x in As]
@@ -396,10 +393,45 @@ class EUROPE:
         CLP = sorted([x.pop() for x in A], key = lambda x: x.baserating, reverse = True) + \
             sorted([x.pop() for x in B], key = lambda x: x.baserating, reverse = True) + \
             sorted([x.pop() for x in C], key = lambda x: x.baserating, reverse = True)
-        self.CLplayin = [[CLP[0], CLP[15], CLP[7], CLP[8]],
+        self.CLplayin = EUplayin([[CLP[0], CLP[15], CLP[7], CLP[8]],
                         [CLP[1], CLP[14], CLP[6], CLP[9]],
                         [CLP[2], CLP[13], CLP[4], CLP[10]],
-                        [CLP[3], CLP[12], CLP[4], CLP[11]]]
+                        [CLP[3], CLP[12], CLP[4], CLP[11]]])
+        cups = sorted([x.cup if x.cup not in x.chosen else x.pop() for x in A+B+C], key = lambda x: x.baserating, reverse = True)
+        self.ELteams[0] = ([numpy.nan] * 4) + cups[:4]
+        self.ELteams[1] = cups[4:12]
+        self.ELteams[2] = cups[12:] + ([numpy.nan] * 4)
+        self.ELteams[3] = ([numpy.nan] * 8)
+        ELP = ([numpy.nan] * 8) + [x.pop() for x in A] + [x.pop() for x in A] + [x.pop() for x in A] + \
+            [x.pop() for x in B] + [x.pop() for x in B] + [x.pop() for x in C] + [x.pop() for x in B]
+        ELP2 = ELP[:28] + ELP[34:] + ELP[28:34]  # Probably didnt need to be that hard
+        self.ELplayin = EUplayin([[ELP2[i], ELP2[i+12], ELP2[i+24]] for i in range(12)])
+        self.ECteams = [[numpy.nan]*8 for i in range(4)]
+        ECP = [numpy.nan]*12 + sorted([x.pop() for x in A] + \
+            [x.pop() for x in B] + [x.pop() for x in B] + \
+            [x.pop() for x in C] + [x.pop() for x in C],  key = lambda x: x.baserating, reverse = True)
+        self.ECplayin = EUplayin([[ECP[i], ECP[39-i]] for i in range(20)])
+
+    def out(self):
+        RESULTS.to_csv(f'Output/Results.csv', index = False)
+        pandas.DataFrame(EURO.CLteams, index = [f'POT {i+1}' for i in range(4)]).T.\
+            to_csv(f'Output/ChampsLeague.csv', index = False)
+        pandas.DataFrame(EURO.CLplayin.teams, index = [f'PATH {i+1}' for i in range(4)]).T.\
+            to_csv(f'Output/ChampsLeaguePlayin.csv', index = False)
+        pandas.DataFrame(EURO.ELteams, index = [f'POT {i+1}' for i in range(4)]).T.\
+            to_csv(f'Output/EuropaLeague.csv', index = False)
+        pandas.DataFrame(EURO.ELplayin.teams, index = [f'PATH {i+1}' for i in range(12)]).T.\
+            to_csv(f'Output/EuropaLeaguePlayin.csv', index = False)
+        pandas.DataFrame(EURO.ECteams, index = [f'POT {i+1}' for i in range(4)]).T.\
+            to_csv(f'Output/ConferenceLeague.csv', index = False)
+        pandas.DataFrame(EURO.ECplayin.teams, index = [f'PATH {i+1}' for i in range(20)]).T.\
+            to_csv(f'Output/ConferenceLeaguePlayin.csv', index = False)
+        
+
+class EUplayin:
+    def __init__(self, teams):
+        self.teams = teams
+
 
 
 
