@@ -8,6 +8,8 @@ from colormath.color_diff import delta_e_cie2000
 from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
 import os
+import shutil
+import dill
 def patch_asscalar(a):
     return a.item()
 setattr(numpy, "asscalar", patch_asscalar)  # I have no damn idea, I stole this from internet since colormath is broken with new numpy.

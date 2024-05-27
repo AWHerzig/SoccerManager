@@ -43,6 +43,7 @@ class CLUB:
         self.name = name
         self.ABR = abr
         self.league = None
+        self.ogqual = qual
         # GAME
         self.score = 0
         # For controlled ----
