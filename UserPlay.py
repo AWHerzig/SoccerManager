@@ -1,8 +1,9 @@
 from Clubs import *
 
 
-def TakeControl(Club):
+def TakeControl(club):
     club.user = True
+    
 
 def overwrite():
     return True

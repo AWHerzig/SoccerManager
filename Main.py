@@ -51,6 +51,7 @@ if slot:
     ALL = TIERA + TIERB + TIERC
     DIRECTORY.to_csv('Output/Directory.csv', index=False)
     WINNERS.to_csv('Output/Winners.csv', index=False)
+    RESULTS.to_csv('Output/Results.csv', index=False)
     for ass in ALL:
         ass.cup.out()
         for lea in ass.leagues:

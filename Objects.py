@@ -4,39 +4,39 @@ qualitySpread = 0
 adjustSpread = 5
 
 class GK:
-    def __init__(self):
-        self.name = 'NAME'
+    def __init__(self, name, qual):
+        self.name = name
         self.POS = 'GK'
-        self.shotstopper = 5
-        self.sweeperkeeper = 5
-        self.eleventhman = 5
+        self.shotstopper = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.sweeperkeeper = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.eleventhman = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
 
 class DEF:
-    def __init__(self):
-        self.name = 'NAME'
+    def __init__(self, name, qual):
+        self.name = name
         self.POS = 'DEF'
-        self.lowblock = 5
-        self.possession = 5
-        self.overload = 5
-        self.longball = 5
+        self.lowblock = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.possession = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.overload = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.longball = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
 
 class MID:
-    def __init__(self):
-        self.name = 'NAME'
+    def __init__(self, name, qual):
+        self.name = name
         self.POS = 'MID'
-        self.quick = 5
-        self.holding = 5
-        self.control = 5
-        self.crossing = 5
+        self.quick = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.holding = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.control = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.crossing = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
 
 class ATT:
-    def __init__(self):
-        self.name = 'NAME'
+    def __init__(self, name, qual):
+        self.name = name
         self.POS = 'ATT'
-        self.routeone = 5
-        self.false9 = 5
-        self.inbehind = 5
-        self.holdup = 5
+        self.routeone = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.false9 = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.inbehind = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.holdup = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
 
 class CLUB:
     def __init__(self, name, abr, qual = 40):
