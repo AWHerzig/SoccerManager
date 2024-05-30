@@ -1,42 +1,55 @@
 from Matchup import *
 
 qualitySpread = 0
+pqualSpread = 7
 adjustSpread = 5
 
 class GK:
-    def __init__(self, name, qual):
-        self.name = name
+    def __init__(self, qual):
+        self.name = names.get_full_name(gender = 'male')
         self.POS = 'GK'
-        self.shotstopper = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.sweeperkeeper = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.eleventhman = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.shotstopper = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.sweeperkeeper = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.eleventhman = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+
+    def stats(self):
+        return f'shotstopper: {self.shotstopper}. sweeperkeeper: {self.sweeperkeeper}. eleventhman: {self.eleventhman}.'
 
 class DEF:
-    def __init__(self, name, qual):
-        self.name = name
+    def __init__(self, qual):
+        self.name = names.get_full_name(gender = 'male')
         self.POS = 'DEF'
-        self.lowblock = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.possession = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.overload = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.longball = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.lowblock = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.possession = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.overload = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.longball = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+
+    def stats(self):
+        return f'lowblock: {self.lowblock}. possession: {self.possession}. overload: {self.overload}. longball: {self.longball}.'
 
 class MID:
-    def __init__(self, name, qual):
-        self.name = name
+    def __init__(self, qual):
+        self.name = names.get_full_name(gender = 'male')
         self.POS = 'MID'
-        self.quick = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.holding = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.control = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.crossing = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.quick = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.holding = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.control = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.crossing = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+
+    def stats(self):
+        return f'quick: {self.quick}. holding: {self.holding}. control: {self.control}. crossing: {self.crossing}.'
 
 class ATT:
-    def __init__(self, name, qual):
-        self.name = name
+    def __init__(self, qual):
+        self.name = names.get_full_name(gender = 'male')
         self.POS = 'ATT'
-        self.routeone = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.false9 = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.inbehind = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
-        self.holdup = clamp(numpy.random.normal(qual, qualitySpread, 1), 0, 100)
+        self.routeone = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.false9 = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.inbehind = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        self.holdup = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+
+    def stats(self):
+        return f'routeone: {self.routeone}. false9: {self.false9}. inbehind: {self.inbehind}. holdup: {self.holdup}.'
 
 class CLUB:
     def __init__(self, name, abr, qual = 40):

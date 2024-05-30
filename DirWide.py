@@ -10,6 +10,7 @@ from colormath.color_conversions import convert_color
 import os
 import shutil
 import dill
+import statistics as stats
 def patch_asscalar(a):
     return a.item()
 setattr(numpy, "asscalar", patch_asscalar)  # I have no damn idea, I stole this from internet since colormath is broken with new numpy.
@@ -89,8 +90,8 @@ def checkpoint(str, pos=(500, 300), size=40, out=None, color=BlackC, filter=None
                 run = False
             if event.type == pygame.QUIT:
                 pygame.quit()
-        out.fill(WhiteC)
-        text('Click to continue', (500, 50), 16, out, BlackC)
+        out.fill(BlackC)
+        text('Click to continue', (500, 50), 16, out, WhiteC)
         text(str, pos, size, out, color)
         pygame.display.update()
 

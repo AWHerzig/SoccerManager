@@ -1,6 +1,6 @@
 *.pyc
 *.ipynb
 */
-Button.py
+# Button.py
 *.csv
 .DS_Store

@@ -1,4 +1,4 @@
-from DirWide import *
+from Button import *
 
 
 
@@ -11,3 +11,6 @@ TacticMatchup = {
     'No Tactic':      [(100, 'draw'), (100, 'sharp'), (100, 'quality'), (100, 'quality'), (0, 'quality')]
 }
 TMdf = pandas.DataFrame(TacticMatchup).set_index('HomeTactic')
+
+
+#pygame.init()
