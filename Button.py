@@ -3,9 +3,9 @@ from DirWide import *
 # And the startup is here
 
 class Box:
-    def __init__(self, show, be, loc):
+    def __init__(self, show, loc, be = None):
         self.show = show
-        self.be = be 
+        self.be = be if be is not None else show
         self.loc = loc  # [L, R, T, B]
 
     def draw(self, col = WhiteC):
@@ -25,7 +25,10 @@ class Box:
         text(self.show, (stats.mean(self.loc[:2]), stats.mean(self.loc[2:])), 24, out, col)
 
     def click(self):
-        return self.be
+        if inspect.isfunction(self.be):
+            return self.be()
+        else:
+            return self.be
 
     def inme(self, point):
         if self.loc[0] <= point[0] <= self.loc[1] and self.loc[2] <= point[1] <= self.loc[3]:
@@ -70,7 +73,7 @@ def buttons(out, title, options, retop=True):
     ind = grid[0] + 4*grid[1]
     return options[ind] if retop else ind
 
-def buttons2(boxes, fillcol = BlackC, textcol = WhiteC):
+def buttons2(boxes, txt = '', fillcol = BlackC, textcol = WhiteC):
     run = True
     while run:
         click = False
@@ -80,6 +83,7 @@ def buttons2(boxes, fillcol = BlackC, textcol = WhiteC):
             if event.type == pygame.QUIT:
                 pygame.quit()
         out.fill(fillcol)
+        text(txt, (screen[0]/2, 100), 40, out, WhiteC)
         mousepoint = pygame.mouse.get_pos()
         for box in boxes:
             if click and box.inme(mousepoint):
@@ -98,7 +102,7 @@ pygame.init()
 out = pygame.display.set_mode(screen)
 pygame.display.set_caption('HERZIG SOCCER')
 kill = False
-checkpoint('HERZIG SOCCER 2025 v0.1', (600, 300), 40, out)
-print(buttons2([Box('3', 3, [100, 200, 200, 400]), Box('4', 4, [500, 600, 200, 400])]))
+checkpoint('HERZIG SOCCER 2025 v0.1', out = out)
+mode = buttons2([Box('Manager Mode', [100, 500, 200, 600]), Box('Simulator Mode', [700, 1100, 200, 600])], 'SELECT GAME MODE')
 ##
 

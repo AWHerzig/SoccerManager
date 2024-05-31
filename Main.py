@@ -34,8 +34,16 @@ class handler:
         self.overall = 0
 glob = handler()
 
-slot = input('INPUT NAME OF SAVE FILE (BLANK TO START NEW)')
-if slot:
+# LOAD SAVE
+x = pandas.DataFrame(os.listdir())
+saves = [None]*16
+real = x[x[0].str.contains('.dill')][0].to_list()
+saves[:len(real)] = real
+bList = [Box(saves[i][5:-5] if saves[i] is not None else '<NEW GAME>', [50 + 300*(i//4), 250 + 300*(i//4), 125 + 150*(i%4), 225 + 150*(i%4)]) for i in range(16)]
+slot = buttons2(bList, 'SELECT SAVE SLOT')
+
+#slot = input('INPUT NAME OF SAVE FILE (BLANK TO START NEW)')
+if slot != '<NEW GAME>':
     print(slot)
     with open(f'SAVE_{slot}.dill', 'rb') as f:
         ENGLAND, SPAIN, GERMANY, ITALY, \
@@ -65,6 +73,8 @@ if slot:
         os.remove(f'Output/{i}')
     #print(EURO)
     EURO.out()
+standingsDisplayer(out, [ENGLAND.leagues[0].standings])
+
 
 def playNextAll():
     if glob.overall == len(glob.slates):
@@ -98,7 +108,7 @@ def yearReset():
     WINNERS.to_csv('Output/Winners.csv', index=False)
 
 
-
+print(ENGLAND.leagues[0].standings)
 # TESTS
 #for i in range(8):
 #    for country in ALL:

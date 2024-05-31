@@ -11,6 +11,7 @@ import os
 import shutil
 import dill
 import statistics as stats
+import inspect
 def patch_asscalar(a):
     return a.item()
 setattr(numpy, "asscalar", patch_asscalar)  # I have no damn idea, I stole this from internet since colormath is broken with new numpy.
@@ -70,7 +71,7 @@ endmatch = {
 }
 
 
-def text(string, pos, size, surface, color=BlackC):
+def text(string, pos, size, surface, color=WhiteC):
     font = pygame.font.Font('freesansbold.ttf', size)
     obj = font.render(str(string), True, color)
     textRect = obj.get_rect()
@@ -82,7 +83,7 @@ def image(path, out, tl, size):
     picrect = pic.get_rect().move(tl)
     out.blit(pic, picrect)
 
-def checkpoint(str, pos=(500, 300), size=40, out=None, color=BlackC, filter=None):
+def checkpoint(str, pos=(600, 300), size=40, out=None, color=WhiteC, filter=None):
     run = True
     while run:
         for event in pygame.event.get():
@@ -91,7 +92,7 @@ def checkpoint(str, pos=(500, 300), size=40, out=None, color=BlackC, filter=None
             if event.type == pygame.QUIT:
                 pygame.quit()
         out.fill(BlackC)
-        text('Click to continue', (500, 50), 16, out, WhiteC)
+        text('Click to continue', (600, 50), 16, out, WhiteC)
         text(str, pos, size, out, color)
         pygame.display.update()
 
@@ -258,12 +259,21 @@ def standingsDisplayer(out, tables, addedText = ''): # Takes up to 4
                 run = False
             if event.type == pygame.QUIT:
                 pygame.quit()
-        out.fill(WhiteC)
-        text('Click to continue', (500, 50), 16, out, BlackC)
-        text(addedText, (250, 50), 24, out, BlackC)
-        text(addedText, (750, 50), 24, out, BlackC)
-        for i in range(len(tables)):
-            tables[i].output(out, 1000//4 + 500*(i%2), 100 + 300 * (i//2))
+        out.fill(BlackC)
+        text('Click to continue', (500, 50), 16, out, WhiteC)
+        text(addedText, (250, 50), 24, out, WhiteC)
+        text(addedText, (750, 50), 24, out, WhiteC)
+        for j in tables:
+            curx = 200
+            cury = 200
+            for i in range(min(len(j), 16)):
+                cury += 30
+                text(strViaList(j.iloc[i], i+1), (curx, cury), 16, out)
+            cury = 200
+            curx = 1000 - 200
+            for i in range(16, len(j)):
+                cury += 30
+                text(strViaList(j.iloc[i], i+1), (curx, cury), 16, out)
         pygame.display.update()
 
 
