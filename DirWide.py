@@ -279,7 +279,12 @@ def standingsDisplayer(out, tables, addedText = ''): # Takes up to 4
 
 def strViaList(x, ind):
     y = list(x)
-    return f"{ind} |{strup(y[0], 15)} |{strup(y[1], 7)} |{strup(y[2], 7)} |{strup(y[3], 7)} |{strup(y[4], 7)}"
+    if len(y) == 7:
+        # NAME, PLAYED, PTS, GD, W, D, L
+        return f"{ind} |{strup(y[0], 15)} |{strup(y[1], 7)} |{strup(y[2], 7)} |{strup(y[3], 7)} |{strup(y[4], 7)} |{strup(y[5], 7)} |{strup(y[6], 7)}"
+    else:
+        # NAME, PLAYED, PTS, GD
+        return f"{ind} |{strup(y[0], 15)} |{strup(y[1], 7)} |{strup(y[2], 7)} |{strup(y[3], 7)}"
 
 def strup(x, leng):  # String up... but im calling it strup from now on
     y = str(x)

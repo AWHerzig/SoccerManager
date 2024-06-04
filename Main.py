@@ -40,8 +40,9 @@ saves = [None]*16
 real = x[x[0].str.contains('.dill')][0].to_list()
 saves[:len(real)] = real
 bList = [Box(saves[i][5:-5] if saves[i] is not None else '<NEW GAME>', [50 + 300*(i//4), 250 + 300*(i//4), 125 + 150*(i%4), 225 + 150*(i%4)]) for i in range(16)]
-slot = buttons2(bList, 'SELECT SAVE SLOT')
-
+slotscreen = Screen(bList, [('SELECT GAME MODE', (600, 100), 40)])
+slot = slotscreen.goto()
+MyClub = None
 #slot = input('INPUT NAME OF SAVE FILE (BLANK TO START NEW)')
 if slot != '<NEW GAME>':
     print(slot)
@@ -73,8 +74,19 @@ if slot != '<NEW GAME>':
         os.remove(f'Output/{i}')
     #print(EURO)
     EURO.out()
-standingsDisplayer(out, [ENGLAND.leagues[0].standings])
-
+#standingsDisplayer(out, [ENGLAND.leagues[0].standings])
+elif mode == 'Manager Mode':
+    bList =  [Box(ALL[i].name, [50 + 300*(i//4), 250 + 300*(i//4), 125 + 150*(i%4), 225 + 150*(i%4)], ALL[i]) for i in range(16)]
+    leaguescreen = Screen(bList, [('SELECT ASSOCIATION TO PLAY IN', (600, 100), 40)])
+    LeaguePick = leaguescreen.goto()
+    if len(LeaguePick.leagues) == 1:
+        DivPick = LeaguePick.leagues[0]
+    else:
+        bList =  [Box(LeaguePick.leagues[i].name, [50 + 600*(i//2), 550 + 600*(i//2), 125 + 275*(i%2), 350 + 275*(i%2)], LeaguePick.leagues[i]) for i in range(len(LeaguePick.leagues))]
+        DivPick = Screen(bList, [('SELECT LEAGUE TO PLAY IN', (600, 100), 40)]).goto()
+    bList =  [Box(f"{DivPick.teams[i].name} {round(DivPick.teams[i].baserating / 11)}", [50 + 300*(i//4), 250 + 300*(i//4), 125 + 120*(i%4), 265 + 120*(i%4)], DivPick.teams[i]) for i in range(len(DivPick.teams))]
+    MyClub = Screen(bList, [('SELECT YOUR CLUB', (600, 100), 40)]).goto()
+    TakeControl(MyClub)
 
 def playNextAll():
     if glob.overall == len(glob.slates):
@@ -107,8 +119,25 @@ def yearReset():
     DIRECTORY.to_csv('Output/Directory.csv', index=False)
     WINNERS.to_csv('Output/Winners.csv', index=False)
 
+MainMenu = Screen([], [])
+MainMenu.boxes.append(Box('Quit', [100, 200, 50, 100], pygame.display.quit))
+MainMenu.boxes.append(Box('My ROSTER', [650, 1100, 150, 300], RosterScreenBuilder(MyClub, MainMenu).goto))
+MainMenu.boxes.append(Box('ADVANCE SEASON', [100, 550, 150, 300], playNextAll)) # Add to this
+if MyClub is not None:
+    ind = list(MyClub.league.standings.index).index(MyClub)
+    minitable = MyClub.league.standings.iloc[max(ind-2, 0):min(ind+3, len(MyClub.league.standings))]
+    MainMenu.boxes.append(Box(dfout(minitable, 925, 450, 'small'), [650, 1100, 400, 650], standingsShower(MyClub.league.standings, MainMenu, ALL).goto))
+else:
+    MainMenu.boxes.append(Box('STANDINGS', [650, 1100, 400, 650], standingsShower(None, MainMenu, ALL).goto))
+MainMenu.goto()
 
-print(ENGLAND.leagues[0].standings)
+def restartMenu():
+    pygame.init()
+    out = pygame.display.set_mode(screen)
+    pygame.display.set_caption('HERZIG SOCCER')
+    MainMenu.goto()
+
+
 # TESTS
 #for i in range(8):
 #    for country in ALL:
@@ -116,4 +145,3 @@ print(ENGLAND.leagues[0].standings)
 #EURO.setup(TIERA, TIERB, TIERC)
 #EURO.playNext()
 #EURO.playNext()
-

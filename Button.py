@@ -13,7 +13,12 @@ class Box:
         pygame.draw.line(out, col, (self.loc[1], self.loc[2]), (self.loc[1], self.loc[3]))
         pygame.draw.line(out, col, (self.loc[0], self.loc[2]), (self.loc[1], self.loc[2]))
         pygame.draw.line(out, col, (self.loc[0], self.loc[3]), (self.loc[1], self.loc[3]))
-        text(self.show, (stats.mean(self.loc[:2]), stats.mean(self.loc[2:])), 20, out, col)
+        if isinstance(self.show, list):
+            #print(self.show, list)
+            for txt in self.show:
+                text(txt[0], txt[1], txt[2], out)
+        else:
+            text(self.show, (stats.mean(self.loc[:2]), stats.mean(self.loc[2:])), 20, out, col)
 
     def hover(self, col = WhiteC):
         widthadd = .1 * (self.loc[1] - self.loc[0])
@@ -22,10 +27,14 @@ class Box:
         pygame.draw.line(out, col, (self.loc[1] + widthadd, self.loc[2] - heightadd), (self.loc[1] + widthadd, self.loc[3] + heightadd))
         pygame.draw.line(out, col, (self.loc[0] - widthadd, self.loc[2] - heightadd), (self.loc[1] + widthadd, self.loc[2] - heightadd))
         pygame.draw.line(out, col, (self.loc[0] - widthadd, self.loc[3] + heightadd), (self.loc[1] + widthadd, self.loc[3] + heightadd))
-        text(self.show, (stats.mean(self.loc[:2]), stats.mean(self.loc[2:])), 24, out, col)
+        if isinstance(self.show, list):
+            for txt in self.show:
+                text(txt[0], txt[1], txt[2], out)
+        else:
+            text(self.show, (stats.mean(self.loc[:2]), stats.mean(self.loc[2:])), 20, out, col)
 
     def click(self):
-        if inspect.isfunction(self.be):
+        if inspect.isfunction(self.be) or inspect.ismethod(self.be):
             return self.be()
         else:
             return self.be
@@ -35,6 +44,8 @@ class Box:
             return True
         else:
             return False
+
+"""
 
 def buttons(out, title, options, retop=True):
     if len(options) > 8:
@@ -93,16 +104,53 @@ def buttons2(boxes, txt = '', fillcol = BlackC, textcol = WhiteC):
             else:
                 box.draw()
         pygame.display.update()
-
-
-# TURN OF FOR TESTING
-#"""
+"""
 pygame.init()
 
 out = pygame.display.set_mode(screen)
 pygame.display.set_caption('HERZIG SOCCER')
 kill = False
 checkpoint('HERZIG SOCCER 2025 v0.1', out = out)
-mode = buttons2([Box('Manager Mode', [100, 500, 200, 600]), Box('Simulator Mode', [700, 1100, 200, 600])], 'SELECT GAME MODE')
+
+class Screen:
+    def __init__(self, boxes, texts, fillcol = BlackC, textcol = WhiteC):
+        self.boxes = boxes
+        self.texts = texts
+        self.fillcol = fillcol
+        self.textcol = textcol
+
+    def goto(self):
+        run = True
+        while run:
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    click = True
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+            out.fill(self.fillcol)
+            for txt in self.texts:
+                text(txt[0], txt[1], txt[2], out, self.textcol)
+            mousepoint = pygame.mouse.get_pos()
+            for box in self.boxes:
+                if click and box.inme(mousepoint):
+                    return box.click()
+                if box.inme(mousepoint):
+                    box.hover()
+                else:
+                    box.draw()
+            pygame.display.update()
+
+    def kill(self):
+        return 'done'
+
+
+
+
+# TURN OF FOR TESTING
+#"""
+
+modescreen = Screen([Box('Manager Mode', [100, 500, 200, 600]), Box('Simulator Mode', [700, 1100, 200, 600])], [('SELECT GAME MODE', (600, 100), 40)])
+mode = modescreen.goto()
 ##
 

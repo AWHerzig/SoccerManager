@@ -11,9 +11,17 @@ class GK:
         self.shotstopper = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.sweeperkeeper = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.eleventhman = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        # Stats
+        self.age = 25
+        self.contract = 3
+        self.gamesplayed = 0
+        self.wins = 0
 
     def stats(self):
-        return f'shotstopper: {self.shotstopper}. sweeperkeeper: {self.sweeperkeeper}. eleventhman: {self.eleventhman}.'
+        return f'STOP: {self.shotstopper}. SWEEP: {self.sweeperkeeper}. 11MAN: {self.eleventhman}.'
+
+    def info(self):
+        return f'Age: {self.age}. Yrs: {self.contract}. P: {self.gamesplayed}. W: {self.wins}'
 
 class DEF:
     def __init__(self, qual):
@@ -23,9 +31,17 @@ class DEF:
         self.possession = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.overload = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.longball = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        # Stats
+        self.age = 25
+        self.contract = 3
+        self.gamesplayed = 0
+        self.wins = 0
 
     def stats(self):
-        return f'lowblock: {self.lowblock}. possession: {self.possession}. overload: {self.overload}. longball: {self.longball}.'
+        return f'BL: {self.lowblock}. PO: {self.possession}. OL: {self.overload}. LB: {self.longball}.'
+
+    def info(self):
+        return f'Age: {self.age}. Yrs: {self.contract}. P: {self.gamesplayed}. W: {self.wins}'
 
 class MID:
     def __init__(self, qual):
@@ -35,9 +51,17 @@ class MID:
         self.holding = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.control = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.crossing = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        # Stats
+        self.age = 25
+        self.contract = 3
+        self.gamesplayed = 0
+        self.wins = 0
 
     def stats(self):
-        return f'quick: {self.quick}. holding: {self.holding}. control: {self.control}. crossing: {self.crossing}.'
+        return f'QU: {self.quick}. HL: {self.holding}. CN: {self.control}. CR: {self.crossing}.'
+
+    def info(self):
+        return f'Age: {self.age}. Yrs: {self.contract}. P: {self.gamesplayed}. W: {self.wins}'
 
 class ATT:
     def __init__(self, qual):
@@ -47,9 +71,17 @@ class ATT:
         self.false9 = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.inbehind = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
         self.holdup = round(clamp(numpy.random.normal(qual, pqualSpread), 0, 100))
+        # Stats
+        self.age = 25
+        self.contract = 3
+        self.gamesplayed = 0
+        self.wins = 0
 
     def stats(self):
-        return f'routeone: {self.routeone}. false9: {self.false9}. inbehind: {self.inbehind}. holdup: {self.holdup}.'
+        return f'R1: {self.routeone}. F9: {self.false9}. IB: {self.inbehind}. HU: {self.holdup}.'
+
+    def info(self):
+        return f'Age: {self.age}. Yrs: {self.contract}. P: {self.gamesplayed}. W: {self.wins}'
 
 class CLUB:
     def __init__(self, name, abr, qual = 40):
