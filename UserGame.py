@@ -66,8 +66,8 @@ class hWall:
             if self.y + 5 + (20*self.flag) >= thing.y + thing.rad >= self.y and self.withinX(thing):
                 thing.yV = -abs(thing.yV)
 
-split = 5  # Milliseconds
-gameTime = 9000  # splits
+split = 25  # Milliseconds
+gameTime = 90000  # splits
 #gameTime *= 1000  # Milliseconds
 kickoffDelay = 1000
 accel = .1
@@ -89,7 +89,7 @@ walls = [vWall(30, 0, goalTop, 1), vWall(screen[0]-30, 0, goalTop, -1),
          ]
 
 class Disc:
-    def __init__(self, abr='N/A', pos=1, cont=False):
+    def __init__(self, qual, abr='N/A', pos=1, cont=False):
         self.name = names.get_full_name()
         while len(self.name) != 15:
             if len(self.name) > 15:
@@ -104,8 +104,9 @@ class Disc:
         self.startY = 0
         self.color = (0, 0, 0)
         self.rad = 25
-        self.pow = 10
-        self.speed = 10
+        self.pow = round(.8*math.sqrt(qual), 1)
+        self.speed = round(.8*math.sqrt(qual), 1)
+        #self.smart = 10
         self.xV = 0
         self.yV = 0
         self.timeSinceHit = 0
@@ -196,9 +197,9 @@ def movementDec(discs, ball, surface):
             (choice['y'] > 0) & (choice['y'] < screen[1])
         
         choice = choice[choice['Possible']].sort_values(by='Time')
-        texts = dataframe_to_aligned_strings_with_headers(choice.iloc[:20, :])
-        for i in range(len(texts)):
-            text(texts[i], (800, 300 + 40*i), 12, surface)
+        #texts = dataframe_to_aligned_strings_with_headers(choice.iloc[:20, :])
+        #for i in range(len(texts)):
+        #    text(texts[i], (800, 300 + 40*i), 12, surface)
         if not choice.empty: # Select the first row (if exists)
             choice = choice.iloc[[0]]
         else:
@@ -222,9 +223,6 @@ def movementDec(discs, ball, surface):
         angle = numpy.arctan2(yDist, xDist)  # Using arctan2 for correct quadrant
         disc.xV = speed * numpy.cos(angle)
         disc.yV = speed * numpy.sin(angle)
-        #text('boob', (xDef, yDef), 12, surface)
-        text(f'{ball.xV} {ball.yV}', (600, 500), 20, surface)
-        text(f'{WhenBackWall}', (600, 550), 20, surface)
         pygame.draw.line(surface, WhiteC, (disc.x, disc.y), (xChoice, yChoice), 2)
         
 
@@ -244,8 +242,8 @@ def reset(things, spot=0):
 
 def usrgame(left, right, ET=False):
     elapsed = 0
-    leftDisc = Disc(abr = left.ABR, cont = left.user)
-    rightDisc = Disc(abr = right.ABR, cont = right.user)
+    leftDisc = Disc(left.baserating/11, abr = left.ABR, cont = left.user)
+    rightDisc = Disc(right.baserating/11, abr = right.ABR, cont = right.user)
     dud = input(f'{left.ABR} v {right.ABR} starting now')
     pygame.init()
     out = pygame.display.set_mode((screen[0], screen[1]))
@@ -264,7 +262,7 @@ def usrgame(left, right, ET=False):
     discs = [leftDisc, rightDisc]
     things = discs + [ball]
     time = 0
-    comTarget = (0, 0)
+    note = ''
     kill = False
     reset(things)
     barrierCrosses = 0
@@ -277,7 +275,7 @@ def usrgame(left, right, ET=False):
             barrierCrosses = 0
         time += split
         elapsed += split / 1000
-        outTime = int(time / 100) if time >= 0 else 'OT'
+        outTime = int(time / 1000) if time >= 0 else 'OT'
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 kill = True
@@ -292,7 +290,13 @@ def usrgame(left, right, ET=False):
                 text(f'OPP', (thing.x, thing.y), 12, out)
         text(f'{left.score}    {outTime}    {right.score}', (screen[0] // 2, 50), 32, out)
         text(f'{left}', (screen[0] * .2, 50), 32, out)
+        l1, l2, l3 = left.league.standings.loc[left].Points, list(left.league.standings.index).index(left) + 1, left.league.abr
+        text(f'{l1} pts, #{l2} in {l3}', (screen[0] * .2, 100), 24, out)
+        text(f'{leftDisc.pow} {leftDisc.speed}', (screen[0] * .2, 75), 16, out)
         text(f'{right}', (screen[0] * .8, 50), 32, out)
+        r1, r2, r3 = right.league.standings.loc[right].Points, list(right.league.standings.index).index(right) + 1, right.league.abr
+        text(f'{r1} pts, #{r2} in {r3}', (screen[0] * .8, 100), 24, out)
+        text(f'{rightDisc.pow} {rightDisc.speed}', (screen[0] * .8, 75), 16, out)
         for wall in walls:
             pygame.draw.line(out, WhiteC, wall.start, wall.end)
         for item in discs:
@@ -375,9 +379,10 @@ def usrgame(left, right, ET=False):
                 wall.isTouching(thing)
             if thing.x < 0 or thing.x > screen[0] or thing.y < 0 or thing.y > screen[1]:  # Something is stuck
                 barrierCrosses += 1
-            if barrierCrosses > 1000:
+            if barrierCrosses > 300:
                 reset(things)
                 barrierCrosses = 0
+        text(f'{barrierCrosses}', (300, 300), 32, out)
         if goalFront - 5 >= ball.x >= goalBack+40 and goalTop+5 <= ball.y <= goalBot-5:  # Goal
             right.score += 1
             reset(things, spot=-1)
@@ -388,7 +393,9 @@ def usrgame(left, right, ET=False):
             barrierCrosses = 0
         pygame.display.update()
     pygame.quit()
-    return [left, left.score, right.score, right, '']
+    if time > gameTime:
+        note = 'a.e.t.'
+    return [left, left.score, right.score, right, note]
 
 
 def distanceFormula(thing1, thing2):
