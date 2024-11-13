@@ -88,6 +88,7 @@ teamResults <- function(team){
 clearOutput()
 readOutput()
 WHU <- teamResults('West Ham United')
-teamResults('AFC Wimbledon')
+PSG <- teamResults('Manchester City')
+
 
 

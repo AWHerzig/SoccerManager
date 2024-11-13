@@ -1,9 +1,10 @@
-from Objects import *
+from UserGame import *
 
 
-def game(home, away, show=False, ET = False, agg = [0, 0], neutral = False):
+def game(home, away, ET = False, agg = [0, 0], neutral = False):
     home.rolesSet(opp = away.basetactic)
     away.rolesSet(opp = home.basetactic)
+    user = home.user or away.user
     #print(home.basetactic, home.tactic, home.qual, home.roles)
     #print(away.basetactic, away.tactic, away.qual, away.roles)
     home.score = agg[0]  # Almost always 0-0
@@ -30,7 +31,7 @@ def game(home, away, show=False, ET = False, agg = [0, 0], neutral = False):
     awayGPM = oddsOfChance * (1 - oddsOfHomePoss) * awaySharp * awayFinish
     stoppage = random.randint(2, 10)
     note = 'Neutral Site ' if neutral else ''
-    if not show:
+    if not user:
         home.score += round(numpy.random.binomial(90 + stoppage, homeGPM))
         away.score += round(numpy.random.binomial(90 + stoppage, awayGPM))
         if home.score == away.score and ET:
@@ -44,34 +45,7 @@ def game(home, away, show=False, ET = False, agg = [0, 0], neutral = False):
                 else:
                     away.score += 1
     else:
-        for minute in range(1, 91 + stoppage): # 91 not included
-            if odds(oddsOfChance):
-                if odds(oddsOfHomePoss):
-                    if odds(homeSharp):
-                        if odds(homeFinish):
-                            home.score += 1
-                else:
-                    if odds(awaySharp):
-                        if odds(awayFinish):
-                            away.score += 1
-        if home.score == away.score and ET:
-            note = note + 'a.e.t.'
-            for minute in range(1, 31): # 31 not included
-                if odds(oddsOfChance):
-                    if odds(oddsOfHomePoss):
-                        if odds(homeSharp):
-                            if odds(homeFinish):
-                                home.score += 1
-                    else:
-                        if odds(awaySharp):
-                            if odds(awayFinish):
-                                away.score += 1
-            if home.score == away.score:
-                note = note + 'Penalties'
-                if odds(.5): # Figure it out later
-                    home.score += 1
-                else:
-                    away.score += 1
+        return usrgame(home, away, ET = ET)
     return [home, home.score, away.score, away, note]
 
 

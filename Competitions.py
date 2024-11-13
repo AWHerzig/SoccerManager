@@ -315,6 +315,7 @@ class CUP:
                 else:
                     self.resultHandler(game(match[0], match[1], ET = True, 
                     agg = [self.aggholder.loc[match[0], 'Score'], self.aggholder.loc[match[1], 'Score']]), advance=True)
+            self.aggholder = pandas.DataFrame(columns = ['Teams', 'Score']).set_index('Teams')
             self.leg = 1
         if len(self.winners) > 1:
             random.shuffle(self.winners)
@@ -479,11 +480,13 @@ class EUROPE:
             self.ELteams.playNext()
             self.ECteams.playNext()
         self.slate += 1
+        #print('EURO SLATE', self.slate)
         self.checks()
         #self.out()
         
     def checks(self):
         if self.slate == 3:
+            #print('Slate3 check')
             # CL -> EL
             CLdroppers = []
             for cup in self.CLplayin.cups:
@@ -528,6 +531,7 @@ class EUROPE:
             self.ELplayin.out()
             self.ECplayin.out()
         if self.slate == 5:
+            #print('Slate5 check')
             # Champions League
             CLadvance = []
             CLdroppers = []
@@ -568,6 +572,7 @@ class EUROPE:
             self.ELteams = self.draw(self.ELteams, 'Europa League Group', 'ELG')
             self.ECteams = self.draw(self.ECteams, 'Conference League Group', 'ECG')
         if self.slate == 11:
+            #print('Slate11 check')
             CLteams = []
             ELbye = []
             ELpi = []

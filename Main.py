@@ -1,6 +1,5 @@
 from UserPlay import *
 
-ExtraGames = pandas.DataFrame({'TYPE':['ENG', 'ESP', 'GER', 'na'], 'GAMES':[3, 4, 2, 0]}).set_index('TYPE')
 
 TIERA = [ENGLAND, SPAIN, GERMANY, ITALY]
 TIERB = [FRANCE, PORTUGAL]
@@ -35,6 +34,7 @@ class handler:
 glob = handler()
 
 # LOAD SAVE
+"""
 x = pandas.DataFrame(os.listdir())
 saves = [None]*16
 real = x[x[0].str.contains('.dill')][0].to_list()
@@ -87,7 +87,7 @@ elif mode == 'Manager Mode':
     bList =  [Box(f"{DivPick.teams[i].name} {round(DivPick.teams[i].baserating / 11)}", [50 + 300*(i//4), 250 + 300*(i//4), 125 + 120*(i%4), 265 + 120*(i%4)], DivPick.teams[i]) for i in range(len(DivPick.teams))]
     MyClub = Screen(bList, [('SELECT YOUR CLUB', (600, 100), 40)]).goto()
     TakeControl(MyClub)
-
+"""
 def playNextAll():
     if glob.overall == len(glob.slates):
         print('No games left')
@@ -119,25 +119,39 @@ def yearReset():
     DIRECTORY.to_csv('Output/Directory.csv', index=False)
     WINNERS.to_csv('Output/Winners.csv', index=False)
 
-MainMenu = Screen([], [])
-MainMenu.boxes.append(Box('Quit', [100, 200, 50, 100], pygame.display.quit))
-MainMenu.boxes.append(Box('My ROSTER', [650, 1100, 150, 300], RosterScreenBuilder(MyClub, MainMenu).goto))
-MainMenu.boxes.append(Box('ADVANCE SEASON', [100, 550, 150, 300], playNextAll)) # Add to this
-if MyClub is not None:
-    ind = list(MyClub.league.standings.index).index(MyClub)
-    minitable = MyClub.league.standings.iloc[max(ind-2, 0):min(ind+3, len(MyClub.league.standings))]
-    MainMenu.boxes.append(Box(dfout(minitable, 925, 450, 'small'), [650, 1100, 400, 650], standingsShower(MyClub.league.standings, MainMenu, ALL).goto))
-else:
-    MainMenu.boxes.append(Box('STANDINGS', [650, 1100, 400, 650], standingsShower(None, MainMenu, ALL).goto))
-MainMenu.goto()
+def playNextUser():
+    playNextAll()
+    restartMenu()
+
+def buildMainMenu():
+    mm = Screen([], [])
+    mm.boxes.append(Box('Quit', [100, 200, 50, 100], pygame.display.quit))
+    mm.boxes.append(Box('My ROSTER', [650, 1100, 150, 300], RosterScreenBuilder(MyClub, mm).goto))
+    mm.boxes.append(Box('ADVANCE SEASON', [100, 550, 150, 300], playNextUser)) # Add to this
+    if MyClub is not None:
+        ind = list(MyClub.league.standings.index).index(MyClub)
+        minitable = MyClub.league.standings.iloc[max(ind-2, 0):min(ind+3, len(MyClub.league.standings))][['Played', 'Points', 'GoalDifference']].reset_index().\
+                rename(columns = {'index': 'Teams', 'Played': 'P', 'Points': 'PTS', 'GoalDifference':'GD'})
+        mm.boxes.append(Box(dfout(minitable, 925, 450), [650, 1100, 400, 650], standingsShower(MyClub.league, mm, ALL, EURO).goto))
+    else:
+        mm.boxes.append(Box('STANDINGS', [650, 1100, 400, 650], standingsShower(None, mm, ALL, EURO).goto))
+    if MyClub is not None:
+        x = scheduleLister(MyClub, glob, EURO)
+        minitable = x[x.Location.isin(['AWAY', 'HOME', 'NEUTRAL'])].iloc[:5][['Competition', 'Location', 'Opponent']]
+        mm.boxes.append(Box(dfout(minitable, 350, 450), [100, 550, 400, 650], scheduleShower(MyClub, mm, ALL, glob, EURO).goto))
+    else:
+        mm.boxes.append(Box('SCHEDULE', [100, 550, 400, 650], scheduleShower(None, mm, ALL, glob, EURO).goto))
+    return mm
+
+#MainMenu = buildMainMenu()
 
 def restartMenu():
     pygame.init()
     out = pygame.display.set_mode(screen)
     pygame.display.set_caption('HERZIG SOCCER')
-    MainMenu.goto()
+    buildMainMenu().goto()
 
-
+#MainMenu.goto() # Removing this whole thing
 # TESTS
 #for i in range(8):
 #    for country in ALL:

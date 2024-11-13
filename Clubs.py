@@ -1,266 +1,193 @@
 from Competitions import *
 ## TIER A ----
 # ENGLAND
-ENG1 = [  # http://elofootball.com/country.php?countryiso=ENG&season=2023-2024
-    CLUB('Manchester City', 'MNC', 99),  # 2397
-    CLUB('Arsenal', 'ARS', 93),
-    CLUB('Liverpool', 'LIV', 94),  # 2252
-    CLUB('Aston Villa', 'AST', 87),  # 2111
-    CLUB('Tottenham Hotspur', 'TOT', 87),
-    CLUB('Chelsea', 'CHE', 80),
-    CLUB('Newcastle United', 'NEW', 82),
-    CLUB('Manchester United', 'MNU', 84),
-    CLUB('West Ham United', 'WHU', 80),
-    CLUB('Crystal Palace', 'PAL', 72),
-    CLUB('Brighton HA', 'BHA', 79),
-    CLUB('Bournemouth', 'BOU', 70),
-    CLUB('Fulham', 'FUL', 76),
-    CLUB('Wolverhampton', 'WOL', 75),
-    CLUB('Everton', 'EVE', 70),
-    CLUB('Brentford', 'BRE', 76), # 1985
-    CLUB('Nottingham Forest', 'FOR', 66),
-    CLUB('Leicester City', 'LEI', 69), # 1927
-    CLUB('Ipswich Town', 'IPS', 64),
-    CLUB('Southampton', 'SOU', 64)
+ENG1 = [
+	CLUB("Man City", "MNC", 90.4),
+	CLUB("Arsenal", "ARS", 81.1),
+	CLUB("Liverpool", "LIV", 80.3),
+	CLUB("Chelsea", "CHE", 70.7),
+	CLUB("Tottenham", "TOT", 68.7),
+	CLUB("Aston Villa", "AST", 68.6),
+	CLUB("Newcastle", "NEW", 66.8),
+	CLUB("Man United", "MNU", 64.1),
+	CLUB("Brighton", "BRI", 62.7),
+	CLUB("Fulham", "FUL", 60.2),
+	CLUB("West Ham", "WHU", 59.9),
+	CLUB("Crystal Palace", "CRY", 59.7),
+	CLUB("Brentford", "BRE", 59.4),
+	CLUB("Bournemouth", "BOU", 59),
+	CLUB("Everton", "EVE", 57.3),
+	CLUB("Forest", "FOR", 56.3),
+	CLUB("Leicester", "LEI", 53.9),
+	CLUB("Wolves", "WOL", 53),
+	CLUB("Ipswich", "IPS", 45.8),
+	CLUB("Southampton", "SOU", 45.5)
 ]
+
 ENG2 = [
-    CLUB('Luton Town', 'LUT', 63),
-    CLUB('Burnley', 'BUR', 65),
-    CLUB('Sheffield United', 'SHE', 59),  # 1781
-    CLUB('Leeds United', 'LEE', 69),
-    CLUB('West Brom', 'BRO', 59),
-    CLUB('Norwich City', 'NOR', 60),
-    CLUB('Hull City', 'HUL', 56),
-    CLUB('Middlesbrough', 'MID', 58),
-    CLUB('Coventry', 'COV', 60),
-    CLUB('Preston North End', 'PRE', 55), # 1696
-    CLUB('Bristol City', 'BRI', 56),
-    CLUB('Cardiff City', 'CAR', 51),
-    CLUB('Millwall', 'MIL', 52),
-    CLUB('Swansea City', 'SWA', 56),
-    CLUB('Watford', 'WAT', 54),
-    CLUB('Sunderland', 'SUN', 54),
-    CLUB('Stoke City', 'STO', 52),
-    CLUB('Queens Park Rangers', 'QPR', 49),
-    CLUB('Blackburn Rovers', 'BLA', 53),
-    CLUB('Sheffield Wednesday', 'WED', 54),
-    CLUB('Plymouth Argyle', 'PLY', 51),
-    CLUB('Portsmouth', 'POR', 53), #1673
-    CLUB('Derby County', 'DER', 53),
-    CLUB('Oxford United', 'OXF', 44)
+	CLUB("Leeds", "LEE", 51.3),
+	CLUB("Burnley", "BUR", 51.2),
+	CLUB("Sheffield United", "SHE", 43.8),
+	CLUB("West Brom", "WES", 43.2),
+	CLUB("Norwich", "NOR", 42.6),
+	CLUB("Middlesbrough", "MID", 41.8),
+	CLUB("Luton", "LUT", 40.9),
+	CLUB("Sunderland", "SUN", 40.4),
+	CLUB("Hull", "HUL", 38.7),
+	CLUB("Blackburn", "BLA", 37.8),
+	CLUB("Swansea", "SWA", 37.6),
+	CLUB("Bristol City", "BRI", 37.4),
+	CLUB("Coventry", "COV", 36.7),
+	CLUB("Millwall", "MIL", 36.5),
+	CLUB("Watford", "WAT", 36.5),
+	CLUB("Preston", "PRE", 35.2),
+	CLUB("Stoke", "STO", 35),
+	CLUB("Sheffield Weds", "SHE", 34.3),
+	CLUB("Oxford", "OXF", 31.9),
+	CLUB("QPR", "QPR", 31.7),
+	CLUB("Derby", "DER", 31.3),
+	CLUB("Cardiff", "CAR", 31.3),
+	CLUB("Plymouth", "PLY", 30.8),
+	CLUB("Portsmouth", "POR", 28.1)
 ]
-ENG3 = [
-    CLUB('Birmingham City', 'BIR', 48), 
-    CLUB('Huddersfield Town', 'HUD', 48),  # 1614
-    CLUB('Rotherham', 'ROT', 40),  # 1506
-    CLUB('Bolton Wanderers', 'BOL', 51),
-    CLUB('Peterborough', 'PET', 47),
-    CLUB('Barnsley', 'BAR', 46),  # 1587
-    CLUB('Lincoln City', 'LIN', 48),
-    CLUB('Blackpool', 'BLA', 47),
-    CLUB('Stevenage', 'STE', 40),
-    CLUB('Wycombe', 'WYC', 43),
-    CLUB('Leyton Orient', 'LEY', 39),
-    CLUB('Wigan Athletic', 'WIG', 44),
-    CLUB('Exeter City', 'EXE', 41), # 1521
-    CLUB('Northampton', 'NOR', 37),
-    CLUB('Bristol Rovers', 'BRR', 35), # 1439
-    CLUB('Charlton', 'CHA', 40),
-    CLUB('Reading', 'REA', 41),
-    CLUB('Cambridge United', 'CAM', 34),
-    CLUB('Shrewsbury', 'SHR', 33),
-    CLUB('Burton', 'BTN', 32),
-    CLUB('Stockport', 'STO', 42),  # 1547
-    CLUB('Wrexham', 'WRE', 40), # 1517
-    CLUB('Mansfield Town', 'MAN', 39),
-    CLUB('Crewe Alexandra', 'CRE', 28)
-]
-ENG4 = [
-    CLUB('Cheltenham', 'CNM', 33),
-    CLUB('Fleetwood', 'FLE', 34),
-    CLUB('Port Vale', 'POV', 30), # 1372
-    CLUB('Carlisle', 'CAR', 26),  # 1329
-    CLUB('Milton Keynes', 'MK', 36),
-    CLUB('Doncaster', 'DON', 34),
-    CLUB('Crawley Town', 'CRA', 31),
-    CLUB('Barrow', 'BRW', 26),
-    CLUB('Bradford City', 'BRD', 31), # 1391
-    CLUB('AFC Wimbledon', 'WIM', 27),
-    CLUB('Walsall', 'WAL', 28),
-    CLUB('Gillingham', 'GIL', 27),
-    CLUB('Harrogate Town', 'HAR', 24),
-    CLUB('Notts County', 'NOT', 26),
-    CLUB('Morecambe', 'MOR', 24),
-    CLUB('Tranmere', 'TRA', 25),  # 1346
-    CLUB('Accrington Stanley', 'ACC', 21),
-    CLUB('Newport County', 'NPT', 22),
-    CLUB('Swindon Town', 'SWI', 20),  # 1302
-    CLUB('Salford City', 'SAL', 25),
-    CLUB('Grimsby Town', 'GRI', 22),
-    CLUB('Colchester', 'COL', 18),
-    CLUB('Chesterfield', 'CHS', 20),
-    CLUB('Bromley', 'BRM', 16)  # 1252
-]
-ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2, ENG3, ENG4], relSpots=[3, 3, 4], lastSpot='ENG')
+ENGLAND = ASSOCIATION('England', 'ENG', leagues=[ENG1, ENG2], relSpots=[3], lastSpot='ENG')
 # SPAIN
 ESP1 = [
-    CLUB('Real Madrid', 'RMA', 97),  # 2348
-    CLUB('FC Barcelona', 'FCB', 90),  # 2182
-    CLUB('Girona', 'GIR', 85),
-    CLUB('Atletico Madrid', 'ATL', 88),
-    CLUB('AC Bilbao', 'BIL', 87), 
-    CLUB('Real Sociedad', 'SOC', 83),
-    CLUB('Real Betis', 'BET', 78),
-    CLUB('Villarreal', 'VIL', 80), # 2038
-    CLUB('Valencia', 'VAL', 76),
-    CLUB('Alaves', 'ALA', 67),
-    CLUB('Osasuna', 'OSA', 69),
-    CLUB('Getafe', 'GET', 70), # 1934
-    CLUB('Celta Vigo', 'CEL', 71),
-    CLUB('Sevilla', 'SEV', 78),
-    CLUB('Mallorca', 'MAL', 72),
-    CLUB('Las Palmas', 'PAL', 65),
-    CLUB('Rayo Vallecano', 'RAY', 65),
-    CLUB('Valladolid', 'VDD', 64),
-    CLUB('Leganes', 'LEG', 61),
-    CLUB('Eibar', 'EIB', 63) # NOT FINAL, AWAITING PLAYOFFS
-    
+	CLUB("Real Madrid", "REA", 82.1),
+	CLUB("Barcelona", "BAR", 75.1),
+	CLUB("Atletico", "ATL", 66.2),
+	CLUB("Bilbao", "BIL", 62.2),
+	CLUB("Girona", "GIR", 59.8),
+	CLUB("Villarreal", "VIL", 59.8),
+	CLUB("Sociedad", "SOC", 59),
+	CLUB("Betis", "BET", 54.7),
+	CLUB("Sevilla", "SEV", 52.5),
+	CLUB("Mallorca", "MAL", 52.4),
+	CLUB("Celta", "CEL", 51.5),
+	CLUB("Osasuna", "OSA", 51.5),
+	CLUB("Rayo Vallecano", "RAY", 49.3),
+	CLUB("Valencia", "VAL", 49.1),
+	CLUB("Getafe", "GET", 48.9),
+	CLUB("Alaves", "ALA", 48.6),
+	CLUB("Espanyol", "ESP", 46.2),
+	CLUB("Valladolid", "VAL", 44.1),
+	CLUB("Las Palmas", "LAS", 43.7),
+	CLUB("Leganes", "LEG", 42.8)
 ]
-ESP2 = [  # NOT DONE YET
-    CLUB('Cadiz', 'CAD', 65),
-    CLUB('Almeria', 'ALM', 60),
-    CLUB('Granada', 'GRA', 61), # 1802
-    CLUB('Espanyol', 'ESP', 64),
-    CLUB('Elche', 'ELC', 61),
-    CLUB('Racing Santander', 'RCS', 56), # 1745
-    CLUB('Sporting Gijon', 'GIJ', 56),
-    CLUB('Real Oviedo', 'OVI', 60),
-    CLUB('Burgos', 'BUR', 55),
-    CLUB('Racing Ferrol', 'RCF', 53), # 1708
-    CLUB('Levante', 'LEV', 61),
-    CLUB('Tenerife', 'TEN', 55),
-    CLUB('Real Zaragoza', 'ZAR', 54),
-    CLUB('Eldense', 'ELD', 49),
-    CLUB('FC Cartagena', 'CAR', 52),
-    CLUB('Huesca', 'HUE', 55),
-    CLUB('Mirandes', 'MIR', 50),
-    CLUB('Alcorcon', 'ALC', 49),
-    CLUB('Albacete', 'ALB', 51),
-    CLUB('Castellon', 'CAS', 48),
-    CLUB('Deportivo La Coruna', 'DEP', 50),
-    CLUB('Andorra', 'AND', 50) # RELEGATED, replacement unknown
+ESP2 = [
+	CLUB("Santander", "SAN", 43.4),
+	CLUB("Oviedo", "OVI", 43.2),
+	CLUB("Eibar", "EIB", 42.3),
+	CLUB("Levante", "LEV", 42.1),
+	CLUB("Granada", "GRA", 41.3),
+	CLUB("Almeria", "ALM", 40.9),
+	CLUB("Gijon", "GIJ", 39.7),
+	CLUB("Cadiz", "CAD", 39.6),
+	CLUB("Zaragoza", "ZAR", 38.8),
+	CLUB("Huesca", "HUE", 37.9),
+	CLUB("Elche", "ELC", 36.6),
+	CLUB("Mirandes", "MIR", 35.2),
+	CLUB("Albacete", "ALB", 34.9),
+	CLUB("Burgos", "BUR", 34.5),
+	CLUB("Castellon", "CAS", 33.2),
+	CLUB("Tenerife", "TEN", 32.7),
+	CLUB("Ferrol", "FER", 31.5),
+	CLUB("Malaga", "MAL", 31.5),
+	CLUB("Eldense", "ELD", 31.1),
+	CLUB("Cartagena", "CAR", 30.9),
+	CLUB("Cordoba", "COR", 29.7),
+	CLUB("Depor", "DEP", 29.6)
 ]
 SPAIN = ASSOCIATION('Spain', 'ESP', leagues = [ESP1, ESP2], relSpots = [3], lastSpot = 'ESP')
 # GERMANY
 GER1 = [
-    CLUB('Leverkusen', 'LEV', 94), # 2246
-    CLUB('VfB Stuttgart', 'STU', 83),
-    CLUB('Bayern Munich', 'BAY', 93),
-    
-    CLUB('RB Leipzig', 'LEI', 90),
-    CLUB('Borrusia Dortmund', 'BVB', 91),
-    CLUB('Eintracht Frankfurt', 'EIN', 74),
-    CLUB('Hoffenheim', 'HOF', 69),
-    CLUB('Heidenheim', 'HEI', 65), # 1876
-    CLUB('Werder Bremen', 'WER', 66),
-    CLUB('SC Freiburg', 'FRE', 74),
-    CLUB('Augsburg', 'AUG', 67),
-    CLUB('Wolfsburg', 'WOL', 68),
-    CLUB('Mainz', 'MAI', 67),
-    CLUB('Monchengladbach', 'MON', 69), # 1912
-    CLUB('Union Berlin', 'UNI', 67),
-    CLUB('VfL Bochum', 'BOC', 63), # 1837
-    CLUB('FC St. Pauli', 'StP', 65),
-    CLUB('Holstein Kiel', 'KIE', 64)
+	CLUB("Leverkusen", "LEV", 77.2),
+	CLUB("Bayern", "BAY", 75),
+	CLUB("Dortmund", "DOR", 70.4),
+	CLUB("RB Leipzig", "RB ", 69),
+	CLUB("Stuttgart", "STU", 65.7),
+	CLUB("Frankfurt", "FRA", 58.8),
+	CLUB("Freiburg", "FRE", 56.4),
+	CLUB("Werder", "WER", 54.9),
+	CLUB("Mainz", "MAI", 54.7),
+	CLUB("Union Berlin", "UNI", 54.1),
+	CLUB("Hoffenheim", "HOF", 53.3),
+	CLUB("Heidenheim", "HEI", 52.9),
+	CLUB("Gladbach", "GLA", 51.8),
+	CLUB("Wolfsburg", "WOL", 51.6),
+	CLUB("Augsburg", "AUG", 48.1),
+	CLUB("St Pauli", "ST ", 45.9),
+	CLUB("Bochum", "BOC", 43.4),
+	CLUB("Holstein", "HOL", 42.5)
 ]
+
 GER2 = [
-    CLUB('Koln', 'KOL', 64),
-    CLUB('Darmstadt', 'DAR', 56), # 1754
-    CLUB('Dusseldorf', 'DUS', 65),
-    CLUB('Hamburger SV', 'HSV', 59),
-    CLUB('Karlsruher', 'KAR', 57), # 1767
-    CLUB('Hannover 96', 'HAN', 54), # 1729
-    CLUB('Paderborn', 'PAD', 56),
-    CLUB('Greuther Furth', 'FUR', 49), # 1669
-    CLUB('Hertha Berlin', 'HER', 58),
-    CLUB('FC Schalke', 'S04', 54),
-    CLUB('SV Elversberg', 'ELV', 48),
-    CLUB('Nurnberg', 'FCN', 46),
-    CLUB('Kaiserslautern', 'FCK', 49),
-    CLUB('FC Magdeburg', 'MAG', 50),
-    CLUB('Eintracht Braunschweig', 'EBW', 47),
-    CLUB('SSV Ulm', 'ULM'),
-    CLUB('Preuben Munster', 'PRM'),
-    CLUB('Jahn Regensburg', 'REG')
+	CLUB("Duesseldorf", "DUE", 48.3),
+	CLUB("Hamburg", "HAM", 47),
+	CLUB("Koeln", "KOE", 45.1),
+	CLUB("Karlsruhe", "KAR", 44),
+	CLUB("Paderborn", "PAD", 39.8),
+	CLUB("Hertha", "HER", 39.3),
+	CLUB("Hannover", "HAN", 38.8),
+	CLUB("Darmstadt", "DAR", 36.7),
+	CLUB("Schalke", "SCH", 35.2),
+	CLUB("Magdeburg", "MAG", 35),
+	CLUB("Fuerth", "FUE", 33.7),
+	CLUB("Lautern", "LAU", 33.2),
+	CLUB("Elversberg", "ELV", 31.9),
+	CLUB("Nuernberg", "NUE", 31.2),
+	CLUB("Braunschweig", "BRA", 27.9),
+	CLUB("Ulm", "ULM", 27.7),
+	CLUB("Muenster", "MUE", 27.2),
+	CLUB("Regensburg", "REG", 23.8)
 ]
-GER3 = [
-    CLUB('Wehen Wiesbaden', 'WIE', 45),
-    CLUB('Hansa', 'HAN', 42), # 1580
-    CLUB('Osnabruck', 'OSN', 41),
-    CLUB('Dynamo Dresden', 'DYN'),
-    CLUB('Saarbrucken', 'SAA'),
-    CLUB('Erzgebirge Aue', 'ERZ'),
-    CLUB('Rot-Weiss Essen', 'RWE'),
-    CLUB('SV Sandhausen', 'SAN'),
-    CLUB('Unterhaching', 'UNT'),
-    CLUB('Ingolstadt', 'ING'),
-    CLUB('Borussia Dortmund 2', 'BVB2'),
-    CLUB('Verl', 'VER'),
-    CLUB('Viktoria Koln', 'VIK'),
-    CLUB('Arminia', 'ARM'),
-    CLUB('1860 Munich', '1860'),
-    CLUB('SV Waldhof', 'WAL'),
-    CLUB('Alemannia Aachen', 'AAC'),
-    CLUB('Energie Cottbus', 'ENE'),
-    CLUB('VfB Stuttgart 2', 'STU2'),
-    CLUB('UNDECIDED', 'TBD') # JUNE 2
-]
-GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2, GER3], relSpots = [3, 3], lastSpot = 'GER')
+GERMANY = ASSOCIATION('Germany', 'GER', leagues = [GER1, GER2], relSpots = [3], lastSpot = 'GER')
 # ITALY
 
 ITA1 = [
-    CLUB('Internazionale', 'INT'),
-    CLUB('AC Milan', 'ACM'),
-    CLUB('Juventus', 'JUV'),
-    CLUB('Bolonga', 'BOL'),
-    CLUB('Roma', 'ROM'),
-    CLUB('Atalanta', 'ATA'),
-    CLUB('Lazio', 'LAZ'),
-    CLUB('Fiorentina', 'FIO'),
-    CLUB('Napoli', 'NAP'),
-    CLUB('Torino', 'TOR'),
-    CLUB('Monza', 'MON'),
-    CLUB('Genoa', 'GEN'),
-    CLUB('Lecce', 'LEC'),
-    CLUB('Cagliari', 'CAG'),
-    CLUB('Verona', 'VER'),
-    CLUB('Frosinone', 'FRO'),
-    CLUB('Empoli', 'EMP'),
-    CLUB('Udinese', 'UDI'),
-    CLUB('Sassuolo', 'SAS'),
-    CLUB('Salernitana', 'SAL')
+	CLUB("Inter", "INT", 80.6),
+	CLUB("Atalanta", "ATA", 71.2),
+	CLUB("Juventus", "JUV", 69.3),
+	CLUB("Milan", "MIL", 67.7),
+	CLUB("Lazio", "LAZ", 65.7),
+	CLUB("Napoli", "NAP", 65.5),
+	CLUB("Roma", "ROM", 63.7),
+	CLUB("Fiorentina", "FIO", 63.2),
+	CLUB("Bologna", "BOL", 60.8),
+	CLUB("Torino", "TOR", 59.5),
+	CLUB("Udinese", "UDI", 54.4),
+	CLUB("Monza", "MON", 53.5),
+	CLUB("Genoa", "GEN", 53.1),
+	CLUB("Empoli", "EMP", 52.6),
+	CLUB("Verona", "VER", 50.1),
+	CLUB("Cagliari", "CAG", 48),
+	CLUB("Lecce", "LEC", 46.6),
+	CLUB("Parma", "PAR", 45.1),
+	CLUB("Como", "COM", 44),
+	CLUB("Venezia", "VEN", 43.6)
 ]
+
 ITA2 = [
-    CLUB('Parma', 'PAR'),
-    CLUB('Como', 'COM'),
-    CLUB('Venezia', 'VEN'),
-    CLUB('Cremonese', 'CRE'),
-    CLUB('Catanzaro', 'CAT'),
-    CLUB('Palermo', 'PAL'),
-    CLUB('Sampdoria', 'SAM'),
-    CLUB('Brescia', 'BRE'),
-    CLUB('Sudtirol', 'SUD'),
-    CLUB('Reggiana', 'REG'),
-    CLUB('Cosenza', 'COS'),
-    CLUB('Pisa', 'PIS'),
-    CLUB('Cittadella', 'CIT'),
-    CLUB('Modena', 'MOD'),
-    CLUB('Spezia', 'SPE'),
-    CLUB('Ascoli', 'ASC'),
-    CLUB('Ternana', 'TER'),
-    CLUB('Bari', 'BAR'),
-    CLUB('FeralpiSalo', 'FS'), # What kind of a name is this
-    CLUB('Lecco', 'LEC')
+	CLUB("Sassuolo", "SAS", 47.2),
+	CLUB("Cremonese", "CRE", 42.5),
+	CLUB("Spezia", "SPE", 40.2),
+	CLUB("Frosinone", "FRO", 39.9),
+	CLUB("Salernitana", "SAL", 38.2),
+	CLUB("Sampdoria", "SAM", 37.9),
+	CLUB("Pisa", "PIS", 36.9),
+	CLUB("Palermo", "PAL", 35.8),
+	CLUB("Bari", "BAR", 34.7),
+	CLUB("Catanzaro", "CAT", 34.5),
+	CLUB("Brescia", "BRE", 34.2),
+	CLUB("Suedtirol", "SUE", 33.5),
+	CLUB("Cosenza", "COS", 32.9),
+	CLUB("Juve Stabia", "JUV", 32.6),
+	CLUB("Modena", "MOD", 31.9),
+	CLUB("Reggiana", "REG", 31.5),
+	CLUB("Mantova", "MAN", 30.9),
+	CLUB("Cesena", "CES", 30.9),
+	CLUB("Cittadella", "CIT", 30.1),
+	CLUB("Carrarese", "CAR", 30)
 ]
 ITALY = ASSOCIATION('Italy', 'ITA', leagues = [ITA1, ITA2], relSpots = [3], lastSpot = 'ESP')
 # Okay so italy has their own different promotion playoffs but its suuuuper weird so I'm ignoring the first round and the 14-points clear rule, then its just ESP
@@ -268,297 +195,254 @@ ITALY = ASSOCIATION('Italy', 'ITA', leagues = [ITA1, ITA2], relSpots = [3], last
 ## TIER B ----
 # FRANCE
 FRA1 = [
-    CLUB('Paris St-Germain', 'PSG'),
-    CLUB('Monaco', 'MON'),
-    CLUB('Brest', 'BRE'),
-    CLUB('LOSC Lille', 'LIL'),
-    CLUB('Nice', 'NIC'),
-    CLUB('Lens', 'LEN'),
-    CLUB('Olympique Marseille', 'OM'),
-    CLUB('Olympique Lyon', 'OL'),
-    CLUB('Rennes', 'REN'),
-    CLUB('Toulouse', 'TOU'),
-    CLUB('Reims', 'REI'),
-    CLUB('Montpellier', 'MTP'),
-    CLUB('Strasbourg', 'STR'),
-    CLUB('Nantes', 'NAN'),
-    CLUB('Le Havre', 'HAV'),
-    CLUB('Metz', 'MET'),
-    CLUB('Lorient', 'LOR'),
-    CLUB('Clermont Foot', 'CLE')
+	CLUB("Paris SG", "PAR", 74.6),
+	CLUB("Monaco", "MON", 66.2),
+	CLUB("Lille", "LIL", 65.5),
+	CLUB("Marseille", "MAR", 62.6),
+	CLUB("Lens", "LEN", 59.2),
+	CLUB("Lyon", "LYO", 58.9),
+	CLUB("Brest", "BRE", 57.6),
+	CLUB("Rennes", "REN", 56.1),
+	CLUB("Nice", "NIC", 55.6),
+	CLUB("Reims", "REI", 53.5),
+	CLUB("Strasbourg", "STR", 50.9),
+	CLUB("Toulouse", "TOU", 49.9),
+	CLUB("Montpellier", "MON", 47.9),
+	CLUB("Nantes", "NAN", 44.5),
+	CLUB("Auxerre", "AUX", 44.2),
+	CLUB("Le Havre", "LE ", 41.8),
+	CLUB("Saint-Etienne", "SAI", 39.6),
+	CLUB("Angers", "ANG", 37)
 ]
+
 FRA2 = [
-    CLUB('Auxerre', 'AUX'),
-    CLUB('St-Etienne', 'StE'),
-    CLUB('Angers', 'ANG'),
-    CLUB('Rodez', 'ROD'),
-    CLUB('Paris FC', 'PAR'),
-    CLUB('Stade Laval', 'LAV'),
-    CLUB('Pau', 'PAU'),
-    CLUB('Caen','CAE'),
-    CLUB('Guingamp', 'GUI'),
-    CLUB('Amiens SC', 'AMI'),
-    CLUB('Ajaccio', 'AJA'),
-    CLUB('Bastia', 'BAS'),
-    CLUB('Grenoble Foot','GRE'),
-    CLUB('Bordeaux', 'BOR'),
-    CLUB('Annecy', 'ANN'),
-    CLUB('Dunkerque', 'DUN'),
-    CLUB('Troyes', 'TRY'),
-    CLUB('Quevilly-Rouen', 'QUE'),
-    CLUB('Concarneau', 'CON'),
-    CLUB('Valenciennes', 'VAFC')
+	CLUB("Lorient", "LOR", 45.4),
+	CLUB("Metz", "MET", 41.9),
+	CLUB("Paris FC", "PAR", 40.7),
+	CLUB("Clermont", "CLE", 38.8),
+	CLUB("Bastia", "BAS", 33.5),
+	CLUB("Amiens", "AMI", 33),
+	CLUB("Grenoble", "GRE", 32.4),
+	CLUB("Rodez", "ROD", 32.4),
+	CLUB("Annecy", "ANN", 32.4),
+	CLUB("Pau", "PAU", 32.3),
+	CLUB("Guingamp", "GUI", 32.1),
+	CLUB("Caen", "CAE", 31.6),
+	CLUB("Laval", "LAV", 31.1),
+	CLUB("Dunkerque", "DUN", 28.4),
+	CLUB("Ajaccio", "AJA", 27.9),
+	CLUB("Troyes", "TRO", 26.8),
+	CLUB("Red Star", "RED", 25),
+	CLUB("Martigues", "MAR", 23.2)
 ]
 FRANCE = ASSOCIATION('France', 'FRA', leagues = [FRA1, FRA2], relSpots = [3], lastSpot = 'GER')
 # France also has a weird Playoff system I'm ignoring the first round of, Germany's gets the point of it
 # PORTUGAL
 POR1 = [
-    CLUB('Sporting CP', 'SCP'),
-    CLUB('Benfica', 'BEN'),
-    CLUB('Porto', 'POR'),
-    CLUB('Braga', 'BRA'),
-    CLUB('Vitoria', 'VIT'),
-    CLUB('Moreirense', 'MOR'),
-    CLUB('Arouca', 'ARO'),
-    CLUB('Famalicao', 'FAM'),
-    CLUB('Farense', 'FAR'),
-    CLUB('Rio Ave', 'RA'),
-    CLUB('Casa Pia', 'CAS'),
-    CLUB('Gil Vicente', 'GIL'),
-    CLUB('Estoril Praia', 'EST'),
-    CLUB('Boavista', 'BOA'),
-    CLUB('Estrela Amadora', 'EST'),
-    CLUB('Portimonese', 'POR'),
-    CLUB('Chaves', 'CHA'),
-    CLUB('Vizela', 'VIZ')
+	CLUB("Sporting", "SPO", 70.4),
+	CLUB("Porto", "POR", 65.1),
+	CLUB("Benfica", "BEN", 63),
+	CLUB("Braga", "BRA", 50.2),
+	CLUB("Guimaraes", "GUI", 47.4),
+	CLUB("Famalicao", "FAM", 39.4),
+	CLUB("Moreirense", "MOR", 37.3),
+	CLUB("Arouca", "ARO", 37.1),
+	CLUB("Gil Vicente", "GIL", 35),
+	CLUB("Rio Ave", "RIO", 34.7),
+	CLUB("Casa Pia", "CAS", 32.8),
+	CLUB("Santa Clara", "SAN", 31.8),
+	CLUB("Boavista", "BOA", 29.8),
+	CLUB("Farense", "FAR", 28.9),
+	CLUB("AVS Futebol", "AVS", 28.9),
+	CLUB("Estoril", "EST", 28.7),
+	CLUB("Nacional", "NAC", 27.9),
+	CLUB("Estrela Amadora", "EST", 27.1)
 ]
-POR2 = [
-    CLUB('Santa Clara', 'SC'),
-    CLUB('Nacional', 'NAC'),
-    CLUB('AVS', 'AVS'),
-    CLUB('Maritimo', 'MAR'),
-    CLUB('Pacos Ferreira', 'PAC'),
-    CLUB('Tondela', 'TON'),
-    CLUB('Porto B', 'POR-B'),
-    CLUB('Torreense', 'TOR'),
-    CLUB('Mafra', 'MAF'),
-    CLUB('Academico de Viseu', 'VIS'),
-    CLUB('UD Leiria', 'LEI'),
-    CLUB('Benfica B', 'BEN-B'),
-    CLUB('Penafiel', 'PEN'),
-    CLUB('Oliveirense', 'OLI'),
-    CLUB('Leixoes', 'LEI'),
-    CLUB('Feirenses', 'FEI'),
-    CLUB('Belenenses', 'BEL'),
-    CLUB('Vilaverdense', 'VIL')
-]
-PORTUGAL = ASSOCIATION('Portugal', 'POR', leagues = [POR1, POR2], relSpots = [3], lastSpot = 'GER')
+PORTUGAL = ASSOCIATION('Portugal', 'POR', leagues = [POR1], relSpots = [], lastSpot = 'na')
 ## TIER C----
 # NETHERLANDS
 NED1 = [
-    CLUB('PSV Eindhoven', 'PSV'),
-    CLUB('Feyenoord', 'FEY'),
-    CLUB('Twente', 'TWE'),
-    CLUB('AZ Alkmaar', 'AZ'),
-    CLUB('Ajax', 'AJX'),
-    CLUB('Utrecht', 'UTR'),
-    CLUB('NEC', 'NEC'),
-    CLUB('Go Ahead Eagles', 'GAE'),
-    CLUB('Sparta Rotterdam', 'ROT'),
-    CLUB('Heerenveen', 'HEE'),
-    CLUB('Fortuna Sittard', 'SIT'),
-    CLUB('PEC Zwolle', 'ZWO'),
-    CLUB('Almere', 'ALM'),
-    CLUB('Heracles', 'HER'),
-    CLUB('RKC Waalwijk', 'WAA'),
-    CLUB('Excelsior', 'XL'),
-    CLUB('FC Volendam', 'VOL'),
-    CLUB('Vitesse', 'VIT')
+	CLUB("PSV", "PSV", 67.2),
+	CLUB("Feyenoord", "FEY", 63.4),
+	CLUB("Ajax", "AJA", 53),
+	CLUB("Twente", "TWE", 48.6),
+	CLUB("Alkmaar", "ALK", 46.7),
+	CLUB("Utrecht", "UTR", 44.4),
+	CLUB("Nijmegen", "NIJ", 39),
+	CLUB("Sparta Rotterdam", "SPA", 38.5),
+	CLUB("Go Ahead Eagles", "GO ", 35.3),
+	CLUB("Sittard", "SIT", 30.6),
+	CLUB("Heerenveen", "HEE", 30),
+	CLUB("Zwolle", "ZWO", 29.2),
+	CLUB("Willem II", "WIL", 26.5),
+	CLUB("Heracles", "HER", 25.9),
+	CLUB("Breda", "BRE", 25),
+	CLUB("Groningen", "GRO", 24.9),
+	CLUB("Waalwijk", "WAA", 24.7),
+	CLUB("Almere", "ALM", 24.7)
 ]
-NED2 = [
-    CLUB('Willem II', 'WIL'),
-    CLUB('Roda', 'ROD'),
-    CLUB('Groningen', 'GRO'),
-    CLUB('Dordrecht', 'DOR'),
-    CLUB('Den Haag', 'DEN'),
-    CLUB('De Graafschap', 'GRA'),
-    CLUB('NAC', 'NAC'),
-    CLUB('FC Emmen', 'EMM'),
-    CLUB('MVV', 'MVV'),
-    CLUB('AZ Alkmaar B', 'AZ-B'),
-    CLUB('Helmond Sport', 'HEL'),
-    CLUB('VVV', 'VVV'),
-    CLUB('Cambuur', 'CAM'),
-    CLUB('Ajax B', 'AJX'),
-    CLUB('FC Eindhoven', 'EIN'),
-    CLUB('PSV Eindhoven B', 'PSV-B'),
-    CLUB('Telstar', 'TEL'),
-    CLUB('Den Bosch', 'DB'),
-    CLUB('TOP Oss', 'OSS'),
-    CLUB('Utrecht B', 'UTR-B')
-]
-NETHERLANDS = ASSOCIATION('Netherlands', 'NED', leagues = [NED1, NED2], relSpots = [3], lastSpot = 'GER')
+NETHERLANDS = ASSOCIATION('Netherlands', 'NED', leagues = [NED1], relSpots = [], lastSpot = 'na')
 # Also weirdass promotion playoffs I refuse to acknowledge
 # SCOTLAND
 SCO1 = [
-    CLUB('Celtic', 'CEL'),
-    CLUB('Rangers', 'RAN'),
-    CLUB('Hearts', 'HEA'),
-    CLUB('Kilmarnock', 'KIL'),
-    CLUB('St Mirren', 'StM'),
-    CLUB('Dundee United', 'DUN'),
-    CLUB('Hibernian', 'HIB'),
-    CLUB('Aberdeen', 'ABE'),
-    CLUB('Motherwell', 'MOT'),
-    CLUB('Ross County', 'ROS'),
-    CLUB('St Johnstone', 'StJ'),
-    CLUB('Livingston', 'LIV')
+	CLUB("Celtic", "CEL", 53.9),
+	CLUB("Rangers", "RAN", 47.1),
+	CLUB("Aberdeen", "ABE", 29.9),
+	CLUB("Hearts", "HEA", 29),
+	CLUB("Kilmarnock", "KIL", 24.7),
+	CLUB("Motherwell", "MOT", 22.5),
+	CLUB("Hibernian", "HIB", 20.6),
+	CLUB("St Mirren", "ST ", 20.1),
+	CLUB("Dundee", "DUN", 17.6),
+	CLUB("Dundee United", "DUN", 17.1),
+	CLUB("St Johnstone", "ST ", 14.4),
+	CLUB("Ross County", "ROS", 12.9)
 ]
 SCOTLAND = ASSOCIATION('Scotland', 'SCO', leagues = [SCO1], relSpots = [], lastSpot = 'na')
 # Yeah yeah I know
 # GREECE
 GRE1 = [
-    CLUB('PAOK', 'PAOK'),
-    CLUB('AEK Athens', 'AEK'),
-    CLUB('Olympiacos', 'OLY'),
-    CLUB('Panathinaikos', 'PAN'),
-    CLUB('Aris', 'ARI'),
-    CLUB('Lamia', 'LAM'),
-    CLUB('Asteras Tripolis', 'AST'),
-    CLUB('Atromitos', 'ATR'),
-    CLUB('Panserraikos', 'PNS'),
-    CLUB('OFI', 'OFI'),
-    CLUB('Kifisia', 'KIF'),
-    CLUB('Panetolikos', 'PNT'),
-    CLUB('Volos', 'VOL'),
-    CLUB('Giannina', 'GIA')
+	CLUB("Olympiakos", "OLY", 51.6),
+	CLUB("PAOK", "PAO", 46.2),
+	CLUB("AEK", "AEK", 44.7),
+	CLUB("Panathinaikos", "PAN", 42.5),
+	CLUB("Aris", "ARI", 35.6),
+	CLUB("Panetolikos", "PAN", 21.4),
+	CLUB("OFI", "OFI", 20.7),
+	CLUB("Asteras Tripolis", "AST", 18.2),
+	CLUB("Atromitos", "ATR", 17.5),
+	CLUB("NFC Volos", "NFC", 17.3),
+	CLUB("Panserraikos", "PAN", 15.6),
+	CLUB("Lamia", "LAM", 15.4),
+	CLUB("Levadeiakos", "LEV", 15.4),
+	CLUB("Kalithea", "KAL", 15.2)
 ]
 GREECE = ASSOCIATION('Greece', 'GRE', leagues = [GRE1], relSpots = [], lastSpot = 'na')
 # Yeah yeah I know
 # TURKEY
 TUR1 = [
-    CLUB('Galatasaray', 'GAL'),
-    CLUB('Fenerbahce', 'FEN'),
-    CLUB('Trabzonspor', 'TRA'),
-    CLUB('Basaksehir', 'BAS'),
-    CLUB('Besiktas', 'BES'),
-    CLUB('Kasimpasa', 'KAS'),
-    CLUB('Alanyaspor', 'ALA'),
-    CLUB('Rizespor', 'RIZ'),
-    CLUB('Sivasspor', 'SIV'),
-    CLUB('Antalyaspor', 'ANT'),
-    CLUB('Adana Demirspor', 'ADA'),
-    CLUB('Samsunspor', 'SAM'),
-    CLUB('Kayserispor', 'KAY'),
-    CLUB('Ankaragucu', 'ANK'),
-    CLUB('Karagumruk', 'KAR'),
-    CLUB('Konyaspor', 'KON'),
-    CLUB('Gaziantep', 'GAZ'),
-    CLUB('Hatayspor', 'HAT'),
-    CLUB('Pendikspor', 'PEN'),
-    CLUB('Istanbulspor', 'IST')
+	CLUB("Galatasaray", "GAL", 56.8),
+	CLUB("Fenerbahce", "FEN", 55.3),
+	CLUB("Besiktas", "BES", 40.5),
+	CLUB("Trabzonspor", "TRA", 36.8),
+	CLUB("Bueyueksehir", "BUE", 36),
+	CLUB("Kasimpasa", "KAS", 31.1),
+	CLUB("Alanyaspor", "ALA", 30.9),
+	CLUB("Sivasspor", "SIV", 30.2),
+	CLUB("Konyaspor", "KON", 29.4),
+	CLUB("Samsunspor", "SAM", 29.2),
+	CLUB("Antalyaspor", "ANT", 26.5),
+	CLUB("Eyupspor", "EYU", 25.2),
+	CLUB("Goeztepe", "GOE", 24.7),
+	CLUB("Adana Demirspor", "ADA", 23.9),
+	CLUB("Rizespor", "RIZ", 23.7),
+	CLUB("Gaziantep FK", "GAZ", 23.6),
+	CLUB("Kayseri", "KAY", 23.4),
+	CLUB("Bodrum", "BOD", 22.7),
+	CLUB("Hatayspor", "HAT", 20.1)
 ]
 TURKIYE = ASSOCIATION('Turkiye', 'TUR', leagues = [TUR1], relSpots = [], lastSpot = 'na')
 # BELGIUM
 BEL1 = [
-    CLUB('Union SG', 'USG'),
-    CLUB('Anderlecht', 'AND'),
-    CLUB('Antwerp', 'ANT'),
-    CLUB('Club Brugge', 'ClB'),
-    CLUB('Cercle Brugge', 'CeB'),
-    CLUB('Genk', 'GNK'),
-    CLUB('Gent', 'GNT'),
-    CLUB('Mechelen', 'MEC'),
-    CLUB('Sint-Truiden', 'StT'),
-    CLUB('Standard Liege', 'LIE'),
-    CLUB('Westerlo', 'WES'),
-    CLUB('OH Leuven', 'LEU'),
-    CLUB('Charleroi', 'CHA'),
-    CLUB('Eupen', 'EUP'),
-    CLUB('Kortrijk', 'KOR'),
-    CLUB('RWD Molenbeek', 'RWD')
+	CLUB("Brugge", "BRU", 54.8),
+	CLUB("Gent", "GNT", 50.1),
+	CLUB("St Gillis", "STG", 49.8),
+	CLUB("Anderlecht", "AND", 49.8),
+	CLUB("Antwerp", "ANT", 47.2),
+	CLUB("Genk", "GNK", 46.6),
+	CLUB("Mechelen", "MEC", 41.2),
+	CLUB("Cercle Brugge", "CER", 37.6),
+	CLUB("Charleroi", "CHA", 36.3),
+	CLUB("St Truiden", "ST ", 35.3),
+	CLUB("Leuven", "LEU", 35.1),
+	CLUB("Westerlo", "WES", 34.3),
+	CLUB("Standard", "STA", 33.3),
+	CLUB("Dender", "DEN", 28.3),
+	CLUB("Kortrijk", "KOR", 25.9),
+	CLUB("Beerschot AC", "BEE", 22.1)
 ]
 BELGIUM = ASSOCIATION('Belgium', 'BEL', leagues = [BEL1], relSpots = [], lastSpot = 'na')
 # DENMARK
 DEN1 = [
-    CLUB('Midtjylland', 'MID'),
-    CLUB('Brondby', 'BRO'),
-    CLUB('Copenhagen', 'COP'),
-    CLUB('Nordsjaelland', 'NOR'),
-    CLUB('AGF', 'AGF'),
-    CLUB('Silkeborg', 'SIL'),
-    CLUB('OB', 'OB'),
-    CLUB('Lyngby', 'Lyngby'),
-    CLUB('Viborg', 'Viborg'),
-    CLUB('Randers', 'Randers'),
-    CLUB('Vejle BK', 'VEJ'),
-    CLUB('Hvidovre', 'HVI')
+	CLUB("Midtjylland", "MID", 48.7),
+	CLUB("FC Kobenhavn", "FC ", 48.3),
+	CLUB("Nordsjaelland", "NOR", 45),
+	CLUB("Brondby", "BRO", 42.5),
+	CLUB("Aarhus", "AAR", 41.2),
+	CLUB("Silkeborg", "SIL", 35.5),
+	CLUB("Randers", "RAN", 34.2),
+	CLUB("Viborg", "VIB", 32.9),
+	CLUB("Lyngby", "LYN", 26.1),
+	CLUB("Aalborg", "AAL", 24.3),
+	CLUB("SonderjyskE", "SON", 23.8),
+	CLUB("Vejle", "VEJ", 21.4)
 ]
 DENMARK = ASSOCIATION('Denmark', 'DEN', leagues = [DEN1], relSpots = [], lastSpot = 'na')
 # SWITZERLAND
 SUI1 = [
-    CLUB('Young Boys', 'YB'),
-    CLUB('Lugano', 'LUG'),
-    CLUB('Servette', 'SER'),
-    CLUB('St. Gallen', 'StG'),
-    CLUB('Winterthur', 'WIN'),
-    CLUB('FC Zurich', 'ZUR'),
-    CLUB('Luzern', 'LUZ'),
-    CLUB('Lausanne', 'LAU'),
-    CLUB('Basel', 'BAS'),
-    CLUB('Yverdon', 'YVE'),
-    CLUB('Grasshoppers', 'GRA'),
-    CLUB('Stade Lausanne-Ouchy', 'SLO')
+	CLUB("Young Boys", "YOU", 40.4),
+	CLUB("Servette", "SER", 36.4),
+	CLUB("Zuerich", "ZUE", 36.1),
+	CLUB("Lugano", "LUG", 35.7),
+	CLUB("StGallen", "STG", 34.6),
+	CLUB("Basel", "BAS", 33.3),
+	CLUB("Luzern", "LUZ", 30.6),
+	CLUB("Lausanne", "LAU", 25),
+	CLUB("Grasshoppers", "GRA", 23.1),
+	CLUB("Yverdon Sport", "YVE", 23),
+	CLUB("Sion", "SIO", 22.4),
+	CLUB("Winterthur", "WIN", 21.7),
+	CLUB("Thun", "THU", 20.2)
 ]
 SWITZERLAND = ASSOCIATION('Switzerland', 'SUI', leagues = [SUI1], relSpots = [], lastSpot = 'na')
 # AUSTRIA
 AUS1 = [
-    CLUB('RB Salzburg', 'SAL'),
-    CLUB('SK Sturm Graz', 'STU'),
-    CLUB('LASK', 'LAS'),
-    CLUB('Austria Klagenfurt', 'KLA'),
-    CLUB('Hartberg', 'HAR'),
-    CLUB('Rapid Wien', 'RAP'),
-    CLUB('Austria Wien', 'AUS'),
-    CLUB('Wolfsberg', 'WOL'),
-    CLUB('Altach', 'ALT'),
-    CLUB('Blau-Weis Linz', 'BWL'),
-    CLUB('WSG Tirol', 'TIR'),
-    CLUB('Austria Lustenau', 'LUS')
+	CLUB("Salzburg", "SAL", 45.6),
+	CLUB("Sturm Graz", "STU", 44.1),
+	CLUB("Rapid Wien", "RAP", 38.4),
+	CLUB("LASK", "LAS", 32.3),
+	CLUB("Austria Wien", "AUS", 31.5),
+	CLUB("Wolfsberg", "WOL", 29.2),
+	CLUB("Hartberg", "HAR", 28),
+	CLUB("Klagenfurt", "KLA", 25),
+	CLUB("BW Linz", "BW ", 22),
+	CLUB("Altach", "ALT", 19.5),
+	CLUB("Wattens", "WAT", 18),
+	CLUB("GAK", "GAK", 15.8)
 ]
 AUSTRIA = ASSOCIATION('Austria', 'AUS', leagues = [AUS1], relSpots = [], lastSpot = 'na')
 # CROATIA
 CRO1 = [
-    CLUB('Dinamo Zagreb', 'ZAG'),
-    CLUB('Rijeka', 'RIJ'),
-    CLUB('Hajduk Split', 'HAJ'),
-    CLUB('Osijek', 'OSI'),
-    CLUB('NK Lokomotiva', 'LOK'),
-    CLUB('Varazdin', 'VAR'),
-    CLUB('Istra 1961', 'IST'),
-    CLUB('HNK Gorica', 'GOR'),
-    CLUB('Slaven Belupo', 'BEL'),
-    CLUB('Rudes', 'RUD')
+	CLUB("Dinamo Zagreb", "DIN", 45),
+	CLUB("Hajduk", "HAJ", 36.1),
+	CLUB("Rijeka", "RIJ", 32),
+	CLUB("Osijek", "OSI", 27.8),
+	CLUB("Lok Zagreb", "LOK", 23.1),
+	CLUB("Varazdin", "VAR", 20.5),
+	CLUB("Istra 1961", "IST", 19.8),
+	CLUB("HNK Gorica", "HNK", 15.4),
+	CLUB("Slaven Belupo", "SLA", 13.4),
+	CLUB("Sibenik", "SIB", 10)
 ]
 CROATIA = ASSOCIATION('Croatia', 'CRO', leagues = [CRO1], relSpots = [], lastSpot = 'na')
 # CZECHIA
 CZE1 = [
-    CLUB('Sparta Praha', 'SPA'),
-    CLUB('Slavia Praha', 'SLA'),
-    CLUB('Viktoria Plzen', 'VIK'),
-    CLUB('Banik', 'BAN'),
-    CLUB('Mlada Boleslav', 'MLA'),
-    CLUB('Slovacko', 'SLO'),
-    CLUB('Liberec', 'LIB'),
-    CLUB('Sigma', 'SIG'),
-    CLUB('Hradec Kralove', 'HK'),
-    CLUB('Teplice', 'TEP'),
-    CLUB('Bohemians ___', 'BOH'),
-    CLUB('Jablonec', 'JAB'),
-    CLUB('FK Pardubice', 'PAR'),
-    CLUB('Karvina', 'KAR'),
-    CLUB('Zlin', 'ZLI'),
-    CLUB('SK Dynamo', 'DYN')
+	CLUB("Slavia Praha", "SLA", 61),
+	CLUB("Sparta Praha", "SPA", 57.4),
+	CLUB("Viktoria Plzen", "VIK", 48.4),
+	CLUB("Banik Ostrava", "BAN", 35),
+	CLUB("Jablonec", "JAB", 31.9),
+	CLUB("Mlada Boleslav", "MLA", 31.5),
+	CLUB("Slovacko", "SLO", 31.2),
+	CLUB("Hradec Kralove", "HRA", 30.7),
+	CLUB("Sigma Olomouc", "SIG", 29.9),
+	CLUB("Slovan Liberec", "SLO", 28),
+	CLUB("Bohemians Praha", "BOH", 27.5),
+	CLUB("Teplice", "TEP", 24.9),
+	CLUB("Pardubice", "PAR", 23.6),
+	CLUB("Karvina", "KAR", 21.6),
+	CLUB("Dukla", "DUK", 18),
+	CLUB("Ceske Budejovice", "CES", 14.7)
 ]
 CZECHIA = ASSOCIATION('Czechia', 'CZE', leagues = [CZE1], relSpots = [], lastSpot = 'na')
 

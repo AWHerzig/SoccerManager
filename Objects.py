@@ -127,7 +127,7 @@ class CLUB:
         self.rolesSet(seasonStart=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} [{round(self.baserating/11)}]'
 
     def rolesSet(self, opp='No Tactic', seasonStart = False):
         # ['Park The Bus', 'Counter Attack', 'Width', 'Strangle', 'No Tactic']

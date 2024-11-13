@@ -70,12 +70,16 @@ endmatch = {
     '0': 'th',
 }
 
+ExtraGames = pandas.DataFrame({'TYPE':['ENG', 'ESP', 'GER', 'na'], 'GAMES':[3, 4, 2, 0]}).set_index('TYPE')
 
-def text(string, pos, size, surface, color=WhiteC):
+def text(string, pos, size, surface, color=WhiteC, spot = 'center'):
     font = pygame.font.Font('freesansbold.ttf', size)
     obj = font.render(str(string), True, color)
     textRect = obj.get_rect()
-    textRect.center = pos
+    if spot == 'center':
+        textRect.center = pos
+    elif spot == 'midleft':
+        textRect.midleft = pos
     surface.blit(obj, textRect)
 
 def image(path, out, tl, size):
@@ -277,18 +281,36 @@ def standingsDisplayer(out, tables, addedText = ''): # Takes up to 4
         pygame.display.update()
 
 
-def strViaList(x, ind):
-    y = list(x)
-    if len(y) == 7:
-        # NAME, PLAYED, PTS, GD, W, D, L
-        return f"{ind} |{strup(y[0], 15)} |{strup(y[1], 7)} |{strup(y[2], 7)} |{strup(y[3], 7)} |{strup(y[4], 7)} |{strup(y[5], 7)} |{strup(y[6], 7)}"
-    else:
-        # NAME, PLAYED, PTS, GD
-        return f"{ind} |{strup(y[0], 15)} |{strup(y[1], 7)} |{strup(y[2], 7)} |{strup(y[3], 7)}"
-
 def strup(x, leng):  # String up... but im calling it strup from now on
     y = str(x)
     return y + max(0, int(1.6*(leng-len(y))))*' '
+
+def dataframe_to_aligned_strings_with_headers(df):
+    # Determine maximum width for each column based on column headers and data
+    col_widths = {
+        col: max(df[col].astype(str).map(len).max(), len(col))
+        for col in df.columns
+    }
+    
+    # Prepare the header row
+    header_row = ' | '.join(
+        f"{col:<{col_widths[col]}}"
+        for col in df.columns
+    )
+    
+    # Prepare the data rows
+    data_rows = []
+    for index, row in df.iterrows():
+        row_str = ' | '.join(
+            f"{str(row[col]):>{col_widths[col]}}"  # Right-align each column
+            for col in df.columns
+        )
+        data_rows.append('|'+row_str+'|')
+    
+    # Combine header and data rows
+    aligned_strings = ['|'+header_row+'|'] + data_rows
+    
+    return aligned_strings
 
 
 """
@@ -437,6 +459,262 @@ def RoundRobin(teams, double = True):
     else:
         return fixtures
 
+def listMergr(x):
+    out = []
+    for i in x:
+        out = out + i
+    return out
+
+def findInCup(fixtures, club, flip = False, neutralFinal = True, round = False):
+    mini = fixtures[(fixtures['Home'] == club) | (fixtures['Away'] == club)]
+    if len(mini) == 0:
+        return False
+    if round:
+        if 4*len(fixtures) <= round:
+            return ['NONE', None]
+        if len(fixtures) >= round:
+            return ['TBD', None]
+    if len(mini) > 0:
+        m = mini.iloc[0,].to_list()
+        if m[0] == club:
+            return ['NEUTRAL' if neutralFinal and len(fixtures) == 1 else 'HOME' if not flip else 'AWAY', m[1].name if m[1] is not None else 'NA']
+        else:
+            return ['NEUTRAL' if neutralFinal and len(fixtures) == 1 else 'AWAY' if not flip else 'HOME', m[0].name if m[1] is not None else 'NA']
+
+def scheduleLister(club, glo, EURO):
+    out = pandas.DataFrame(columns = ['GameNum', 'Competition', 'Stage', 'Location', 'Opponent'])
+    l, c, e, s, starte = glo.league, 'Alive', glo.euro, club.league.slate, glo.euro
+    level = club.league.assoc.leagues.index(club.league)
+    hold = None
+    holdlevel = None
+    holdknock = None
+    flipList = [None, None, [None, None, True, False], [None, True, False, False], [True, False, True, False]]
+    neutList = [None, None, False, True, False]
+    roundList = [None, None, [None, None, 2, 2], [None, 4, 4, 2], [4, 4, 2, 2]]
+    counter = glo.overall
+    for i in glo.slates[glo.overall:]:
+        counter += 1
+        #print(out.dtypes)
+        #print(out)
+        if i == 'League':
+            l += 1
+            exgames = ExtraGames.loc[club.league.assoc.last, 'GAMES']
+            if (l / 50) > (s / (len(club.league.schedule) + (exgames if level > 0 else 0))):
+                if s >= len(club.league.schedule):
+                    if 50 - l >= exgames:
+                        out.loc[len(out)] = [counter, club.league.abr, 'OFF', 'NA', 'NA']
+                    else:
+                        if club.league.slate >= len(club.league.schedule): # Have the tournament
+                            message = findInCup(club.league.playoffs.fixtures, club,
+                                               flip = flipList[exgames][l-47],
+                                               neutralFinal = neutList[exgames],
+                                               round = roundList[exgames][l-47])
+                            if not message:
+                                out.loc[len(out)] = [counter, club.league.abr, 'PROM PLAYOFF', 'NA', 'NA']
+                            else:
+                                out.loc[len(out)] = [counter, club.league.abr, 'PROM PLAYOFF'] + message
+                        else: # Dont
+                            out.loc[len(out)] = [counter, club.league.abr, 'PROM PLAYOFF', 'TBD', 'TBD']
+                else:
+                    df = pandas.DataFrame(club.league.schedule[s])
+                    m = df[(df[0] == club) | (df[1] == club)].iloc[0,].to_list()
+                    if m[0] == club:
+                        out.loc[len(out)] = [counter, club.league.abr, str(s+1), 'HOME', m[1].name if m[1] is not None else 'NA']
+                    else:
+                        out.loc[len(out)] = [counter, club.league.abr, str(s+1), 'AWAY', m[0].name if m[0] is not None else 'NA']
+                    s += 1
+            else:
+                out.loc[len(out)] = [counter, club.league.abr, 'OFF', 'NA', 'NA']
+        elif i == 'Cup':
+            if c == 'Alive':
+                message = findInCup(club.league.assoc.cup.fixtures, club)
+                if not message:
+                    c = 'Eliminated'
+                    out.loc[len(out)] = [counter, club.league.assoc.cup.abr, 'CUP', 'Eliminated', 'NA']
+                else:
+                    c = 'TBD'
+                    out.loc[len(out)] = [counter, club.league.assoc.cup.abr, 'CUP'] + message
+            else:
+                out.loc[len(out)] = [counter, club.league.assoc.cup.abr, 'CUP', 'TBD', 'NA']
+        else:
+            e += 1
+            if e <= 4:
+                # Champions League
+                if club in listMergr(EURO.CLteams):
+                    out.loc[len(out)] = [counter, 'CL', 'PLAY-IN', 'Advanced', 'NA']
+                elif club in listMergr(EURO.ELteams):
+                    out.loc[len(out)] = [counter, 'EL', 'PLAY-IN', 'Advanced', 'NA']
+                elif club in listMergr(EURO.ECteams):
+                    out.loc[len(out)] = [counter, 'EC', 'PLAY-IN', 'Advanced', 'NA']
+                else:
+                    clpi = findInCup(pandas.concat([cup.fixtures for cup in EURO.CLplayin.cups], ignore_index=True), 
+                                 club, flip = e % 2 == 1, neutralFinal = False, round = 16 * (.5 ** ((e-1)//2)))
+                    elpi = findInCup(pandas.concat([cup.fixtures for cup in EURO.ELplayin.cups], ignore_index=True), 
+                                 club, flip = e % 2 == 1, neutralFinal = False, round = 48 * (.5 ** ((e-1)//2)))
+                    ecpi = findInCup(pandas.concat([cup.fixtures for cup in EURO.ECplayin.cups], ignore_index=True), 
+                                 club, flip = e % 2 == 1, neutralFinal = False, round = 80 * (.5 ** ((e-1)//2)))
+                    if clpi:
+                        out.loc[len(out)] = [counter, 'CL', 'PLAY-IN'] + clpi
+                    elif elpi:
+                        out.loc[len(out)] = [counter, 'EL', 'PLAY-IN'] + elpi
+                    elif ecpi:
+                        out.loc[len(out)] = [counter, 'EC', 'PLAY-IN'] + ecpi
+                    else:
+                        out.loc[len(out)] = [counter, 'EURO', 'PLAY-IN', 'NA', 'NA']
+            elif e <= 10:
+                if starte < 4:
+                    out.loc[len(out)] = [counter, 'EURO', 'GROUPS', 'NA', 'NA']
+                    continue
+                if holdlevel is None:
+                    if club in listMergr([i.teams for i in EURO.CLteams]):
+                        holdlevel = 'CL'
+                    elif club in listMergr([i.teams for i in EURO.ELteams]):
+                        holdlevel = 'EL'
+                    elif club in listMergr([i.teams for i in EURO.ECteams]):
+                        holdlevel = 'EC'
+                    else:
+                        holdlevel = 'na'
+                elevel = holdlevel
+                map = {'CL':EURO.CLteams, 'EL':EURO.ELteams, 'EC':EURO.ECteams}
+                if elevel == 'na':
+                    out.loc[len(out)] = [counter, 'EURO', 'GROUPS', 'NA', 'NA']
+                else:
+                    split = map[elevel]
+                    if hold is None:
+                        hold = listMergr([i.teams for i in split]).index(club) // 4
+                    g = hold
+                    df = pandas.DataFrame(split[g].schedule[e-5])
+                    m = df[(df[0] == club) | (df[1] == club)].iloc[0,].to_list()
+                    if m[0] == club:
+                        out.loc[len(out)] = [counter, elevel, 'GROUPS', 'HOME', m[1].name if m[1] is not None else 'NA']
+                    else:
+                        out.loc[len(out)] = [counter, elevel, 'GROUPS', 'AWAY', m[0].name if m[0] is not None else 'NA']
+            else:
+                if starte < 10:
+                    out.loc[len(out)] = [counter, 'EURO', 'KNOCKOUT', 'NA', 'NA']
+                    continue
+                if holdknock is None:
+                    if findInCup(EURO.CLteams.fixtures, club):
+                        holdknock = 'CL'
+                    elif findInCup(EURO.ELteams.fixtures, club):
+                        holdknock = 'EL'
+                    elif findInCup(EURO.ECteams.fixtures, club):
+                        holdknock = 'EC'
+                    else:
+                        holdknock = 'na'
+                if holdknock == 'na':
+                    out.loc[len(out)] = [counter, 'EURO', 'KNOCKOUT', 'NA', 'NA']
+                else:
+                    eknock = holdknock
+                    map = {'CL':EURO.CLteams, 'EL':EURO.ELteams, 'EC':EURO.ECteams}
+                    realknock = map[eknock]
+                    message = findInCup(realknock.fixtures, club, flip = e % 2 == 1, round = 2**(1 + (20 - e)//2))
+                    out.loc[len(out)] = [counter, holdknock, 'KNOCKOUT'] + message
+    return out
+
+def getNextSchedule(glob, EURO, spec = None):
+    if glob.overall == len(glob.slates):
+        print('No games left')
+        return
+    print('SLATE TYPE:', glob.slates[glob.overall])
+    if glob.slates[glob.overall] == 'League':
+        for assoc in ALL:
+            for level in range(len(assoc.leagues)):
+                league = assoc.leagues[level]
+                if (glob.league+1 / 50) > (league.slate / (len(league.schedule) + (ExtraGames.loc[assoc.last, 'GAMES'] if level > 0 else 0))):
+                    if spec is not None:
+                        if league != spec:
+                            continue
+                    print(league.name)
+                    if league.slate < len(league.schedule):
+                        for i in league.schedule[league.slate]:
+                            a = f'{i[0]} ({league.standings.loc[i[0]].Points} pts, #{list(league.standings.index).index(i[0]) + 1} in {league.abr})'
+                            b = f'{i[1]} ({league.standings.loc[i[1]].Points} pts, #{list(league.standings.index).index(i[1]) + 1} in {league.abr})'
+                            print(a, '  vs.  ', b)
+                    else:
+                        c = league.playoffs
+                        if c is None:
+                            continue
+                        matches = zip(c.fixtures.Home, c.fixtures.Away)
+                        for i in matches:
+                            if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                                a = f'{i[0]}'
+                                b = f'{i[1]}'
+                                print(a, '  vs.  ', b)
+                            else: 
+                                a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                                b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                                print(b, '  vs.  ', a)
+    elif glob.slates[glob.overall] == 'Cup':
+        #print('here')
+        for assoc in ALL:
+            c = assoc.cup
+            if spec is not None:
+                if c != spec:
+                    continue
+            if len(c.fixtures) < glob.cup // 2: # Get the finals lined up
+                continue
+            print(c.name)
+            matches = zip(c.fixtures.Home, c.fixtures.Away)
+            for i in matches:
+                a = f'{i[0]}'
+                b = f'{i[1]}'
+                print(a, '  vs.  ', b)
+            #assoc.cup.playNext(glob.cup)
+    else:
+        if glob.euro < 4:
+            all = EURO.CLplayin.cups + EURO.ELplayin.cups + EURO.ECplayin.cups if glob.euro in [2, 3] else \
+                EURO.CLplayin.cups + EURO.ELplayin.cups
+            for c in all:
+                if spec is not None:
+                    if c not in spec:
+                        continue
+                print(c.name)
+                matches = zip(c.fixtures.Home, c.fixtures.Away)
+                for i in matches:
+                    if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                        a = f'{i[0]}'
+                        b = f'{i[1]}'
+                        print(a, '  vs.  ', b)
+                    else: 
+                        a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                        b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                        print(b, '  vs.  ', a)
+        elif glob.euro < 10:
+            all = EURO.CLteams + EURO.ELteams + EURO.ECteams
+            for league in all:
+                if spec is not None:
+                    if league not in spec:
+                        continue
+                print(league.name)
+                for i in league.schedule[league.slate]:
+                    a = f'{i[0]} ({league.standings.loc[i[0]].Points} pts, #{list(league.standings.index).index(i[0]) + 1} in {league.abr})'
+                    b = f'{i[1]} ({league.standings.loc[i[1]].Points} pts, #{list(league.standings.index).index(i[1]) + 1} in {league.abr})'
+                    print(a, '  vs.  ', b)
+        else:
+            all = [EURO.ELteams, EURO.ECteams] if glob.euro in [10, 11] else \
+                [EURO.CLteams, EURO.ELteams, EURO.ECteams]
+            for c in all:
+                if spec is not None:
+                    if c not in spec:
+                        continue
+                print(c.name)
+                matches = zip(c.fixtures.Home, c.fixtures.Away)
+                for i in matches:
+                    if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                        a = f'{i[0]}'
+                        b = f'{i[1]}'
+                        print(a, '  vs.  ', b)
+                    else: 
+                        a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                        b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                        print(b, '  vs.  ', a)
+
+def nameShorten(x):
+    if x is None:
+        return None
+    else:
+        return x.name if len(x.name) < 10 else x.ABR
 
 
 """

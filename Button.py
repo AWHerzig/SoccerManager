@@ -105,22 +105,55 @@ def buttons2(boxes, txt = '', fillcol = BlackC, textcol = WhiteC):
                 box.draw()
         pygame.display.update()
 """
-pygame.init()
+#pygame.init()
 
-out = pygame.display.set_mode(screen)
-pygame.display.set_caption('HERZIG SOCCER')
+#out = pygame.display.set_mode(screen)
+#pygame.display.set_caption('HERZIG SOCCER')
 kill = False
-checkpoint('HERZIG SOCCER 2025 v0.1', out = out)
+#checkpoint('HERZIG SOCCER 2025 v0.1', out = out)
+
+def renderDF(df, viewport_y):
+    SCREEN_HEIGHT = 700
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    LINE_HEIGHT = font.get_linesize()
+    # Calculate column widths based on content and headers
+    total_height = (len(df) + 1) * LINE_HEIGHT  # +1 for header
+    
+    # Create a surface to render the visible portion of the DataFrame
+    surface = pygame.Surface((1000, SCREEN_HEIGHT))
+    surface.fill(BlackC)  # Fill with white background
+    
+    # Render headers
+    for i, col in enumerate(df.columns):
+        text_surface = font.render(f"{col}", True, WhiteC)
+        surface.blit(text_surface, (i * 150, 0))  # Adjust position as needed
+    
+    # Render data rows within the viewport
+    start_index = max(0, viewport_y)
+    end_index = min(len(df), start_index + (SCREEN_HEIGHT // LINE_HEIGHT) + 1)
+    
+    for index in range(start_index, end_index):
+        row = df.iloc[index]
+        for i, col in enumerate(df.columns):
+            text_surface = font.render(f"{str(row[col])}", True, WhiteC)
+            surface.blit(text_surface, (i * 150, (index - start_index + 1) * LINE_HEIGHT))  # Adjust position as needed
+    
+    return surface
+
 
 class Screen:
-    def __init__(self, boxes, texts, fillcol = BlackC, textcol = WhiteC):
+    def __init__(self, boxes, texts, surfaces = [], fillcol = BlackC, textcol = WhiteC, spot = 'center'):
         self.boxes = boxes
         self.texts = texts
+        self.surfaces = surfaces
         self.fillcol = fillcol
         self.textcol = textcol
+        self.spot = spot
 
     def goto(self):
         run = True
+        viewport_y = 0
+        SCROLL_SPEED = 1
         while run:
             click = False
             for event in pygame.event.get():
@@ -128,9 +161,16 @@ class Screen:
                     click = True
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        viewport_y -= SCROLL_SPEED
+                    elif event.key == pygame.K_DOWN:
+                        viewport_y += SCROLL_SPEED
             out.fill(self.fillcol)
             for txt in self.texts:
-                text(txt[0], txt[1], txt[2], out, self.textcol)
+                text(txt[0], txt[1], txt[2], out, self.textcol, self.spot)
+            for surf in self.surfaces:
+                out.blit(renderDF(surf[0], viewport_y), (surf[1], surf[2]))
             mousepoint = pygame.mouse.get_pos()
             for box in self.boxes:
                 if click and box.inme(mousepoint):
@@ -150,7 +190,7 @@ class Screen:
 # TURN OF FOR TESTING
 #"""
 
-modescreen = Screen([Box('Manager Mode', [100, 500, 200, 600]), Box('Simulator Mode', [700, 1100, 200, 600])], [('SELECT GAME MODE', (600, 100), 40)])
-mode = modescreen.goto()
+#modescreen = Screen([Box('Manager Mode', [100, 500, 200, 600]), Box('Simulator Mode', [700, 1100, 200, 600])], [('SELECT GAME MODE', (600, 100), 40)])
+#mode = modescreen.goto()
 ##
 
