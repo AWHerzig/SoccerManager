@@ -1,4 +1,8 @@
-from Clubs import *
+DLeague = True
+if DLeague:
+    from ClubsDL import *
+else:
+    from Clubs import *
 
 
 def TakeControl(club):

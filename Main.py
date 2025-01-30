@@ -1,37 +1,27 @@
 from UserPlay import *
 
 
-TIERA = [ENGLAND, SPAIN, GERMANY, ITALY]
-TIERB = [FRANCE, PORTUGAL]
-TIERC = [NETHERLANDS, SCOTLAND, GREECE, TURKIYE, BELGIUM, 
-    DENMARK, SWITZERLAND, AUSTRIA, CROATIA, CZECHIA]
-ALL = TIERA + TIERB + TIERC
-EURO = EUROPE()
-EURO.pastCL = ENG1[0]
-EURO.pastEL = ESP1[12]
-DIRECTORY.to_csv('Output/Directory.csv', index=False)
-WINNERS.to_csv('Output/Winners.csv', index=False)
-EURO.setup(TIERA, TIERB, TIERC)
+if DLeague:
+    DIRECTORY.to_csv('Output/Directory.csv', index=False)
+    WINNERS.to_csv('Output/Winners.csv', index=False)
+else:
+    TIERA = [ENGLAND, SPAIN, GERMANY, ITALY]
+    TIERB = [FRANCE, PORTUGAL]
+    TIERC = [NETHERLANDS, SCOTLAND, GREECE, TURKIYE, BELGIUM, 
+        DENMARK, SWITZERLAND, AUSTRIA, CROATIA, CZECHIA]
+    ALL = TIERA + TIERB + TIERC
+    if not fromSave:
+        EURO = EUROPE()
+        EURO.pastCL = ESP1[0]
+        EURO.pastEL = ITA1[1]
+        EURO.setup(TIERA, TIERB, TIERC)
+        glob = handler()
+    DIRECTORY.to_csv('Output/Directory.csv', index=False)
+    WINNERS.to_csv('Output/Winners.csv', index=False)
 
-class handler:
-    def __init__(self):
-        # 50 Leagues, 7 Cup, 21 EURO
-        self.league = 0
-        self.cup = 128
-        self.euro = 0
-        #self.slates  = ['Cup' if ((i+1) % 11) == 0 else 'Euro' if ((i+1) % 3) == 0 and not 45 < i < 55 else 'League' for i in range(78)]
-        self.slates = ['Cup' if ((i+3) % 11) == 0 else 'Euro' if ((i-0) % 3) == 0 and not 31 < i < 46 else 'League' for i in range(76)]
-        self.overall = 0
-    
-    def __str__(self):
-        return f'LEAGUE: {self.league}, CUP: {self.cup}, EURO: {self.euro}'
 
-    def reset(self):
-        self.league = 0
-        self.cup = 128
-        self.euro = 0
-        self.overall = 0
-glob = handler()
+
+
 
 # LOAD SAVE
 """
@@ -62,9 +52,9 @@ if slot != '<NEW GAME>':
     WINNERS.to_csv('Output/Winners.csv', index=False)
     RESULTS.to_csv('Output/Results.csv', index=False)
     for ass in ALL:
-        ass.cup.out()
+        ass.cup.out(RESULTS)
         for lea in ass.leagues:
-            lea.out()
+            lea.out(RESULTS)
     outs = pandas.DataFrame(os.listdir('Output'))
     outs = outs[outs[0].str.startswith(('ECP', 'ELP', 'CLP'))][0].tolist()
     outs
@@ -73,7 +63,7 @@ if slot != '<NEW GAME>':
     for i in outs:
         os.remove(f'Output/{i}')
     #print(EURO)
-    EURO.out()
+    EURO.out(RESULTS)
 #standingsDisplayer(out, [ENGLAND.leagues[0].standings])
 elif mode == 'Manager Mode':
     bList =  [Box(ALL[i].name, [50 + 300*(i//4), 250 + 300*(i//4), 125 + 150*(i%4), 225 + 150*(i%4)], ALL[i]) for i in range(16)]
@@ -88,39 +78,138 @@ elif mode == 'Manager Mode':
     MyClub = Screen(bList, [('SELECT YOUR CLUB', (600, 100), 40)]).goto()
     TakeControl(MyClub)
 """
-def playNextAll():
+def getNextSchedule(ALL, glob, EURO, spec = None):
     if glob.overall == len(glob.slates):
         print('No games left')
         return
+    print('SLATE TYPE:', glob.slates[glob.overall])
     if glob.slates[glob.overall] == 'League':
-        glob.league += 1
         for assoc in ALL:
             for level in range(len(assoc.leagues)):
                 league = assoc.leagues[level]
-                if (glob.league / 50) > (league.slate / (len(league.schedule) + (ExtraGames.loc[assoc.last, 'GAMES'] if level > 0 else 0))):
-                    league.playNext()
+                if (glob.league+1 / 50) > (league.slate / (len(league.schedule) + (ExtraGames.loc[assoc.last, 'GAMES'] if level > 0 else 0))):
+                    if spec is not None:
+                        if league != spec:
+                            continue
+                    print(league.name)
+                    if league.slate < len(league.schedule):
+                        for i in league.schedule[league.slate]:
+                            a = f'{i[0]} ({league.standings.loc[i[0]].Points} pts, #{list(league.standings.index).index(i[0]) + 1} in {league.abr})'
+                            b = f'{i[1]} ({league.standings.loc[i[1]].Points} pts, #{list(league.standings.index).index(i[1]) + 1} in {league.abr})'
+                            print(a, '  vs.  ', b)
+                    else:
+                        c = league.playoffs
+                        if c is None:
+                            continue
+                        matches = zip(c.fixtures.Home, c.fixtures.Away)
+                        for i in matches:
+                            if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                                a = f'{i[0]}'
+                                b = f'{i[1]}'
+                                print(a, '  vs.  ', b)
+                            else: 
+                                a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                                b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                                print(b, '  vs.  ', a)
     elif glob.slates[glob.overall] == 'Cup':
         #print('here')
-        glob.cup = glob.cup // 2
         for assoc in ALL:
-            assoc.cup.playNext(glob.cup)
+            c = assoc.cup
+            if spec is not None:
+                if c != spec:
+                    continue
+            if len(c.fixtures) < glob.cup // 2: # Get the finals lined up
+                continue
+            print(c.name)
+            matches = zip(c.fixtures.Home, c.fixtures.Away)
+            for i in matches:
+                a = f'{i[0]}'
+                b = f'{i[1]}'
+                print(a, '  vs.  ', b)
     else:
-        glob.euro += 1
-        EURO.playNext()
-    glob.overall += 1
-    if glob.overall == len(glob.slates):
-        print('SEASON OVER')
+        if glob.euro < 4:
+            all = EURO.CLplayin.cups + EURO.ELplayin.cups + EURO.ECplayin.cups if glob.euro in [2, 3] else \
+                EURO.CLplayin.cups + EURO.ELplayin.cups
+            for c in all:
+                if spec is not None:
+                    if c not in spec:
+                        continue
+                print(c.name)
+                matches = zip(c.fixtures.Home, c.fixtures.Away)
+                for i in matches:
+                    if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                        a = f'{i[0]}'
+                        b = f'{i[1]}'
+                        print(a, '  vs.  ', b)
+                    else: 
+                        a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                        b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                        print(b, '  vs.  ', a)
+        elif glob.euro < 10:
+            all = EURO.CLteams + EURO.ELteams + EURO.ECteams
+            for league in all:
+                if spec is not None:
+                    if league not in spec:
+                        continue
+                print(league.name)
+                for i in league.schedule[league.slate]:
+                    a = f'{i[0]} ({league.standings.loc[i[0]].Points} pts, #{list(league.standings.index).index(i[0]) + 1} in {league.abr})'
+                    b = f'{i[1]} ({league.standings.loc[i[1]].Points} pts, #{list(league.standings.index).index(i[1]) + 1} in {league.abr})'
+                    print(a, '  vs.  ', b)
+        else:
+            all = [EURO.ELteams, EURO.ECteams] if glob.euro in [10, 11] else \
+                [EURO.CLteams, EURO.ELteams, EURO.ECteams]
+            for c in all:
+                if spec is not None:
+                    if c not in spec:
+                        continue
+                print(c.name)
+                matches = zip(c.fixtures.Home, c.fixtures.Away)
+                for i in matches:
+                    if len(c.aggholder) == 0 or i[0] is None or i[1] is None:
+                        a = f'{i[0]}'
+                        b = f'{i[1]}'
+                        print(a, '  vs.  ', b)
+                    else: 
+                        a = f'{i[0]} ({c.aggholder.loc[i[0]].Score})'
+                        b = f'{i[1]} ({c.aggholder.loc[i[1]].Score})'
+                        print(b, '  vs.  ', a)
 
-def yearReset():
+def playNextAll(ALL, glob, EURO, RESULTS, times = 1):
+    for i in range(times):
+        if glob.overall == len(glob.slates):
+            print('No games left')
+            return
+        if glob.slates[glob.overall] == 'League':
+            glob.league += 1
+            for assoc in ALL:
+                for level in range(len(assoc.leagues)):
+                    league = assoc.leagues[level]
+                    if (glob.league / 50) > (league.slate / (len(league.schedule) + (ExtraGames.loc[assoc.last, 'GAMES'] if level > 0 or assoc.last == 'GER' else 0))):
+                        league.playNext(RESULTS)
+        elif glob.slates[glob.overall] == 'Cup':
+            #print('here')
+            glob.cup = glob.cup // 2
+            for assoc in ALL:
+                assoc.cup.playNext(RESULTS, glob.cup)
+        else:
+            glob.euro += 1
+            EURO.playNext(RESULTS)
+        glob.overall += 1
+        RESULTS.to_csv('Output/Results.csv')
+        if glob.overall == len(glob.slates):
+            print('SEASON OVER')
+
+def yearReset(ALL, glob, EURO, DIRECTORY):
     EURO.setup(TIERA, TIERB, TIERC)
     for assoc in ALL:
-        assoc.endOfYear()
+        assoc.endOfYear(DIRECTORY)
     glob.reset()
     DIRECTORY.to_csv('Output/Directory.csv', index=False)
     WINNERS.to_csv('Output/Winners.csv', index=False)
 
 def playNextUser():
-    playNextAll()
+    playNextAll(RESULTS)
     restartMenu()
 
 def buildMainMenu():

@@ -93,6 +93,8 @@ class CLUB:
         self.score = 0
         # For controlled ----
         self.user = False
+        self.goal = 0
+        self.ratingAdjustMean = 0
         self.squadGK  = []
         self.squadDEF = []
         self.squadMID = []
@@ -141,7 +143,7 @@ class CLUB:
                 'Strangle': TMdf.loc['Strangle', opp][0]}
         else:
             tacAdd = {'No Tactic': 0, 'Park The Bus': 0, 'Counter Attack': 0, 'Width': 0, 'Strangle': 0}
-        if not self.user:
+        if self.user or not self.user :
             maxi = bg + bd + bm + ba + tacAdd['No Tactic']
             PTB = self.shotstopper + self.lowblock + self.holding + self.holdup + tacAdd['Park The Bus']
             CA = self.shotstopper + self.longball + self.quick + self.inbehind + tacAdd['Counter Attack']
@@ -219,27 +221,28 @@ class CLUB:
             pass
 
     def ratingAdjust(self):
+
         # For all ----
-        self.coach = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.coach/1, adjustSpread, 1)])
+        self.coach = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.coach/1 + self.ratingAdjustMean, adjustSpread, 1)])
         # GK
-        self.shotstopper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.shotstopper/1, adjustSpread, 1)])
-        self.sweeperkeeper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.sweeperkeeper/1, adjustSpread, 1)])
-        self.eleventhman = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.eleventhman/1, adjustSpread, 1)])
+        self.shotstopper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.shotstopper/1 + self.ratingAdjustMean, adjustSpread, 1)])
+        self.sweeperkeeper = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.sweeperkeeper/1 + self.ratingAdjustMean, adjustSpread, 1)])
+        self.eleventhman = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.eleventhman/1 + self.ratingAdjustMean, adjustSpread, 1)])
         # DEF
-        self.lowblock = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.lowblock/4, adjustSpread, 4)])
-        self.possession = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.possession/4, adjustSpread, 4)])
-        self.overload = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.overload/4, adjustSpread, 4)])
-        self.longball = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.longball/4, adjustSpread, 4)])
+        self.lowblock = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.lowblock/4 + self.ratingAdjustMean, adjustSpread, 4)])
+        self.possession = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.possession/4 + self.ratingAdjustMean, adjustSpread, 4)])
+        self.overload = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.overload/4 + self.ratingAdjustMean, adjustSpread, 4)])
+        self.longball = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.longball/4 + self.ratingAdjustMean, adjustSpread, 4)])
         # MID
-        self.quick = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.quick/3, adjustSpread, 3)])
-        self.holding = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holding/3, adjustSpread, 3)])
-        self.control = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.control/3, adjustSpread, 3)])
-        self.crossing = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.crossing/3, adjustSpread, 3)])
+        self.quick = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.quick/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.holding = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holding/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.control = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.control/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.crossing = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.crossing/3 + self.ratingAdjustMean, adjustSpread, 3)])
         # ATT
-        self.routeone = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.routeone/3, adjustSpread, 3)])
-        self.false9 = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.false9/3, adjustSpread, 3)])
-        self.inbehind = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.inbehind/3, adjustSpread, 3)])
-        self.holdup = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holdup/3, adjustSpread, 3)])
+        self.routeone = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.routeone/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.false9 = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.false9/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.inbehind = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.inbehind/3 + self.ratingAdjustMean, adjustSpread, 3)])
+        self.holdup = sum([clamp(i, 0, 100) for i in numpy.random.normal(self.holdup/3 + self.ratingAdjustMean, adjustSpread, 3)])
         # FULL
         self.qual = None, None, None, None
         self.roles = None, None, None, None
@@ -293,4 +296,23 @@ class CLUB:
                 self.tactic = 'No Tactic'
         else:
             self.tactic = 'No Tactic'
+
+class handler:
+    def __init__(self):
+        # 50 Leagues, 7 Cup, 21 EURO
+        self.league = 0
+        self.cup = 128
+        self.euro = 0
+        #self.slates  = ['Cup' if ((i+1) % 11) == 0 else 'Euro' if ((i+1) % 3) == 0 and not 45 < i < 55 else 'League' for i in range(78)]
+        self.slates = ['Cup' if ((i+3) % 11) == 0 else 'Euro' if ((i-0) % 3) == 0 and not 31 < i < 46 else 'League' for i in range(76)]
+        self.overall = 0
+    
+    def __str__(self):
+        return f'LEAGUE: {self.league}, CUP: {self.cup}, EURO: {self.euro}'
+
+    def reset(self):
+        self.league = 0
+        self.cup = 128
+        self.euro = 0
+        self.overall = 0
     

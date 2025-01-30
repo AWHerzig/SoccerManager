@@ -89,7 +89,7 @@ walls = [vWall(30, 0, goalTop, 1), vWall(screen[0]-30, 0, goalTop, -1),
          ]
 
 class Disc:
-    def __init__(self, qual, abr='N/A', pos=1, cont=False):
+    def __init__(self, d, m, o, abr='N/A', pos=1, cont=False):
         self.name = names.get_full_name()
         while len(self.name) != 15:
             if len(self.name) > 15:
@@ -104,9 +104,10 @@ class Disc:
         self.startY = 0
         self.color = (0, 0, 0)
         self.rad = 25
-        self.pow = round(.8*math.sqrt(qual), 1)
-        self.speed = round(.8*math.sqrt(qual), 1)
-        #self.smart = 10
+        self.pow = round(.8*math.sqrt(o/3), 1) if not cont else round(.8*math.sqrt((o+d)/8), 1)
+        self.speed = round(.6*math.sqrt(m/3), 1) if not cont else round(.6*math.sqrt((m+d)/8), 1)
+        self.smart = round(.8*math.sqrt(d/5), 1)
+        self.smartmiss = [0, 0, 0]
         self.xV = 0
         self.yV = 0
         self.timeSinceHit = 0
@@ -173,11 +174,19 @@ def movementDec(discs, ball, surface):
         yDef = (goalTop+goalBot)/2
         # Ball Vector
         df = pandas.DataFrame({'Time': Time})
-        df['x'] = BallVec(df.Time, ball.xV, ball.x, 0)
-        df['y'] = BallVec(df.Time, ball.yV, ball.y, 1)
+        if disc.smartmiss[0] == 0:
+            disc.smartmiss[0] = 40
+            disc.smartmiss[1] = numpy.random.normal(0, .12*(10-disc.smart))
+            disc.smartmiss[2] = numpy.random.normal(0, .12*(10-disc.smart))
+        else:
+            disc.smartmiss[0] -= 1
+        pbxV = ball.xV + disc.smartmiss[1] # Implementation of disc.smart
+        pbyV = ball.yV + disc.smartmiss[2]
+        df['x'] = BallVec(df.Time, pbxV, ball.x, 0)
+        df['y'] = BallVec(df.Time, pbyV, ball.y, 1)
         # Back Wall Timing
         data = pandas.DataFrame({'Time': Time})
-        data['x'] = ball.xV * data['Time'] + ball.x
+        data['x'] = pbxV * data['Time'] + ball.x
         WhenBackWall = data.loc[(data['x'] < 0) | (data['x'] > 2*screen[0]), 'Time'].min()
         if WhenBackWall is numpy.nan:
             WhenBackWall = 10000
@@ -205,12 +214,12 @@ def movementDec(discs, ball, surface):
         else:
             choice = pandas.DataFrame(columns=['Time', 'x', 'y', 'Time.Tar'])
         tChoice = choice['Time'].values[0] if not choice.empty else 10000
-        if tChoice < WhenBackWall:
-            xChoice = choice['x'].values[0] if not choice.empty else xDef
-            yChoice = choice['y'].values[0] if not choice.empty else yDef
-        else:
-            xChoice = xDef
-            yChoice = yDef
+        #if tChoice < WhenBackWall:
+        xChoice = choice['x'].values[0] if not choice.empty else xDef
+        yChoice = choice['y'].values[0] if not choice.empty else yDef
+        #else:
+        #    xChoice = xDef
+        #   yChoice = yDef
         
         yDist = yChoice - disc.y
         xDist = xChoice - disc.x
@@ -223,7 +232,7 @@ def movementDec(discs, ball, surface):
         angle = numpy.arctan2(yDist, xDist)  # Using arctan2 for correct quadrant
         disc.xV = speed * numpy.cos(angle)
         disc.yV = speed * numpy.sin(angle)
-        pygame.draw.line(surface, WhiteC, (disc.x, disc.y), (xChoice, yChoice), 2)
+        #pygame.draw.line(surface, WhiteC, (disc.x, disc.y), (xChoice, yChoice), 2)
         
 
 
@@ -242,12 +251,13 @@ def reset(things, spot=0):
 
 def usrgame(left, right, ET=False):
     elapsed = 0
-    leftDisc = Disc(left.baserating/11, abr = left.ABR, cont = left.user)
-    rightDisc = Disc(right.baserating/11, abr = right.ABR, cont = right.user)
+    leftDisc = Disc(left.qual[0]+left.qual[1], left.qual[2], left.qual[3], abr = left.ABR, cont = left.user)
+    rightDisc = Disc(right.qual[0]+right.qual[1], right.qual[2], right.qual[3], abr = right.ABR, cont = right.user)
     dud = input(f'{left.ABR} v {right.ABR} starting now')
     pygame.init()
     out = pygame.display.set_mode((screen[0], screen[1]))
     pygame.display.set_caption(f'{left.ABR} v {right.ABR}; ')
+    checkpoint('CLICK TO START', out=out)
     ball = Ball()
     leftDisc.color = GreenC
     leftDisc.side = -1
@@ -292,11 +302,11 @@ def usrgame(left, right, ET=False):
         text(f'{left}', (screen[0] * .2, 50), 32, out)
         l1, l2, l3 = left.league.standings.loc[left].Points, list(left.league.standings.index).index(left) + 1, left.league.abr
         text(f'{l1} pts, #{l2} in {l3}', (screen[0] * .2, 100), 24, out)
-        text(f'{leftDisc.pow} {leftDisc.speed}', (screen[0] * .2, 75), 16, out)
+        text(f'{leftDisc.pow} {leftDisc.speed} {leftDisc.smart}', (screen[0] * .2, 75), 16, out)
         text(f'{right}', (screen[0] * .8, 50), 32, out)
         r1, r2, r3 = right.league.standings.loc[right].Points, list(right.league.standings.index).index(right) + 1, right.league.abr
         text(f'{r1} pts, #{r2} in {r3}', (screen[0] * .8, 100), 24, out)
-        text(f'{rightDisc.pow} {rightDisc.speed}', (screen[0] * .8, 75), 16, out)
+        text(f'{rightDisc.pow} {rightDisc.speed}  {rightDisc.smart}', (screen[0] * .8, 75), 16, out)
         for wall in walls:
             pygame.draw.line(out, WhiteC, wall.start, wall.end)
         for item in discs:
@@ -382,7 +392,7 @@ def usrgame(left, right, ET=False):
             if barrierCrosses > 300:
                 reset(things)
                 barrierCrosses = 0
-        text(f'{barrierCrosses}', (300, 300), 32, out)
+        #text(f'{barrierCrosses}', (300, 300), 32, out)
         if goalFront - 5 >= ball.x >= goalBack+40 and goalTop+5 <= ball.y <= goalBot-5:  # Goal
             right.score += 1
             reset(things, spot=-1)

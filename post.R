@@ -65,7 +65,9 @@ readOutput <- function(){
     name <- strsplit(file, '[.]')[[1]][1]
     assign(name, read.csv(paste0('Output/', file)), envir = .GlobalEnv)
   }
-  WinnersWide <<- Winners %>% pivot_wider(names_from = 'Year', values_from = 'Team')
+  if(exists('Winners')){
+    WinnersWide <<- Winners %>% pivot_wider(names_from = 'Year', values_from = 'Team')
+  }
   if(ls(envir = .GlobalEnv)[ls(envir = .GlobalEnv) %like% 'CLP'] %>% length() > 0){
     EUROreformPI()
   }
@@ -74,21 +76,24 @@ readOutput <- function(){
   }
 }
 teamResults <- function(team){
-  one <- Results %>% filter(Home == team | Away == team)
-  keeps <- one %>% select(Year, Competition, Round, Notes)
+  one <- Results %>% filter(Home %like% team | Away %like% team)
+  #keeps <- one %>% select(Year, Competition, Round, Notes)
   new <- one %>% mutate(
-    Team = ifelse(Home == team, Home, Away), TeamScore = ifelse(Home == team, HomeScore, AwayScore),
-    Opp = ifelse(Home == team, Away, Home), OppScore = ifelse(Home == team, AwayScore, HomeScore),
-    Type = ifelse(Notes %like% c('Neutral', 'No Game'), 'Neutral', ifelse(Home == team, 'Home', 'Away'))   
+    Team = ifelse(Home %like% team, Home, Away), TeamScore = ifelse(Home %like% team, HomeScore, AwayScore),
+    Opp = ifelse(Home %like% team, Away, Home), OppScore = ifelse(Home %like% team, AwayScore, HomeScore),
+    Type = ifelse(Notes %like% c('Neutral', 'No Game'), 'Neutral', ifelse(Home %like% team, 'Home', 'Away'))   
   )
   new %>% select(Year, Competition, Round, Type, Team, TeamScore, OppScore, Opp, Notes)
 }
 
 
-clearOutput()
+#clearOutput()
 readOutput()
-WHU <- teamResults('West Ham United')
-PSG <- teamResults('Manchester City')
+WHU <- teamResults('West Ham')
+H20 <- teamResults('HydroHomies')
+y <- teamResults('Roma')
 
+y <- H20 %>% filter(Opp %like% 'Catanzaro')
 
+y <- Directory %>% filter(Team %like% 'Hydro')
 
